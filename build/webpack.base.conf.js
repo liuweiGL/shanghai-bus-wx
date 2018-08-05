@@ -1,20 +1,20 @@
-var path = require('path')
-var fs = require('fs')
-var utils = require('./utils')
-var config = require('../config')
-var vueLoaderConfig = require('./vue-loader.conf')
-var MpvuePlugin = require('webpack-mpvue-asset-plugin')
-var glob = require('glob')
+let path = require('path')
+let fs = require('fs')
+let utils = require('./utils')
+let config = require('../config')
+let vueLoaderConfig = require('./vue-loader.conf')
+let MpvuePlugin = require('webpack-mpvue-asset-plugin')
+let glob = require('glob')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function getEntry (rootSrc, pattern) {
-  var files = glob.sync(path.resolve(rootSrc, pattern))
+function getEntry(rootSrc, pattern) {
+  let files = glob.sync(path.resolve(rootSrc, pattern))
   return files.reduce((res, file) => {
-    var info = path.parse(file)
-    var key = info.dir.slice(rootSrc.length + 1) + '/' + info.name
+    let info = path.parse(file)
+    let key = info.dir.slice(rootSrc.length + 1) + '/' + info.name
     res[key] = path.resolve(file)
     return res
   }, {})
@@ -33,14 +33,15 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath:
+      process.env.NODE_ENV === 'production'
+        ? config.build.assetsPublicPath
+        : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue': 'mpvue',
+      vue: 'mpvue',
       '@': resolve('src')
     },
     symlinks: false,
@@ -73,7 +74,7 @@ module.exports = {
             options: {
               checkMPEntry: true
             }
-          },
+          }
         ]
       },
       {
@@ -102,7 +103,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new MpvuePlugin()
-  ]
+  plugins: [new MpvuePlugin()]
 }
