@@ -68,17 +68,8 @@
   @each $unit in $element {
     $currentSelector: #{$currentSelector + "." + $B + $element-separator + $unit + ","};
   }
-
-  @if hitAllSpecialNestRule($selector) {
-    @at-root {
-      #{$selector} {
-        #{$currentSelector} {
-          @content;
-        }
-      }
-    }
-  } @else {
-    @at-root {
+  @at-root {
+    #{$selector} {
       #{$currentSelector} {
         @content;
       }

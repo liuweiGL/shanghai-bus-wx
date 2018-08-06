@@ -1,0 +1,37 @@
+/*
+   Font
+   -------------------------- */
+$--font-size-desc: 11px; // 装饰性字体大小
+$--font-size-extra: 13px; // 次要内容字体大小
+$--font-size-base: 14px; // 默认字体大小
+$--font-size-h4: 17px; // 区别于基础内容模块的字体大小
+$--font-size-h3: 18px; // 主要用于大按钮，实在不好命名...
+$--font-size-h2: 20px; // 页面大标题
+$--font-size-h1: 40px; // 主要用于 数字、时间
+
+/*
+   Color
+   -------------------------- */
+
+$--color-black: #000; // 主内容颜色
+$--color-grey: #888; // 次内容颜色
+$--color-semi: #353535; // 大块的主内容颜色
+$--color-light: #b2b2b2; // 时间戳与表单缺省值颜色
+
+$--color-link: #576b95; // 链接颜色
+$--color-link-light: rgba($--color-link, 0.2); // 按压状态颜色
+$--color-link-lightest: rgba($--color-link, 0.1); // 禁用状态颜色
+
+$--color-primary: #2f54eb; // 主色调
+$--color-primary-light: #597ef7; // hover
+$--color-primary-dark: #1d39c4; // click
+
+$--color-success: #09bb07; // 完成状态颜色
+$--color-success-light: #30c728; // hover
+$--color-success-dark: #009402; // click
+
+$--color-danger: #e64340; // 错误颜色
+$--color-danger-light: #f2716b; // hover
+$--color-danger-dark: #bf2c2e; // click
+
+$--app-background-color: #f8f8f8; // app背景色
