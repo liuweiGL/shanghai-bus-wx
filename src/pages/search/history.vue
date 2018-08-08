@@ -7,36 +7,31 @@
               hover-class="is-hover"
               plain>清除</button>
     </view>
-    <scroll-view ref="list"
-                 class="bus-search-history__list"
-                 scroll-y>
-      <view class="bus-search-history__item"
-            v-for="item in list"
-            :key="item">
-        <view class="bus-search-history__name">{{ item.name }}</view>
-        <view class="bus-search-history__desc">{{ item.desc }}</view>
-      </view>
-    </scroll-view>
+    <bus-router-list :data="list" />
   </view>
 </template>
 <script>
+import BusRouterList from '@/components/routerList/index'
+
 export default {
   name: 'BusComponentSearchHistory',
-  updated() {
-    this.setHeight()
+  components: {
+    BusRouterList
   },
   data() {
     return {
-      list: []
+      list: Array.from({ length: 5 }).map((item, index) => {
+        return {
+          name: '公交路线' + index,
+          desc: '-'
+        }
+      })
     }
   },
   watch: {
     router: 'addItem'
   },
   methods: {
-    setHeight() {
-      console.log(this.$refs.list)
-    },
     addItem() {
       // const {router,list}=this
     },
@@ -59,19 +54,22 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 5px 0;
+    color: $--color-title;
+    background: $--color-background-light;
+  }
+  @include e(title) {
+    padding-left: 10px;
+    font-size: $--font-size-base;
   }
   @include e(btn) {
     margin: 0;
     color: $--color-primary;
     border: none;
     border-radius: 0;
-    @include when(hover){
+    @include when(hover) {
       color: $--color-primary-light;
     }
-  }
-  @include e(list) {
-    height: 200px;
   }
 }
 </style>

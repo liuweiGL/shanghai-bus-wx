@@ -7,8 +7,12 @@ export default {
 <style lang="scss">
 page {
   height: 100%;
+  font: normal $--font-size-base/1.5 'Chinese Quote', -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+}
+button[size='mini'] {
   font-size: $--font-size-base;
-  line-height: 1.5;
-  background-color: $--app-background-color;
 }
 </style>
