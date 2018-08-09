@@ -10,7 +10,7 @@
               class="bus-index__search-icon" />
       </view>
     </view>
-    <view class="bus-index__scroll">
+    <view class="bus-index__around-bus">
       <bus-around-bus />
     </view>
   </view>
@@ -24,7 +24,6 @@ export default {
   components: {
     BusAroundBus
   },
-  created() {},
   data() {
     return {}
   },
@@ -42,7 +41,7 @@ export default {
 @include b(index) {
   position: relative;
   display: flex;
-  flex-flow: column nowrap;
+  flex-direction: column;
   height: 100%;
   @include e(search) {
     flex: none;
@@ -66,9 +65,9 @@ export default {
     right: 10px;
     padding: 8px 10px;
   }
-  @include e(scroll) {
+  @include e(around-bus) {
     flex: 1;
-    height: 100%;
+    overflow: hidden;
   }
 }
 </style>
