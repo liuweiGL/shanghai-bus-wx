@@ -9,10 +9,15 @@
 
 <script>
 import BusRouterList from '@/components/routerList'
+import { getBusByLocation } from '@/apis/aroundBus'
+
 export default {
   name: 'BusAroundBus',
   components: {
     BusRouterList
+  },
+  created() {
+    getBusByLocation().always(console.log)
   },
   data() {
     return {
