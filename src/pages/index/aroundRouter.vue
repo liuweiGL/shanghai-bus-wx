@@ -1,21 +1,30 @@
 <template>
-  <scroll-view class="bus-around-bus"
-               scroll-y>
-    <view class="bus-around-bus__hd">附近公交：</view>
-    <view class="bus-around-bus__fail"
-          v-if="fail">
-      <button type="primary"
-              class="bus-around-bus__btn"
-              @click="failHandler">{{ btnText }}</button>
-    </view>
-    <bus-router-list :data="list"
-                     v-else />
-  </scroll-view>
+  <view class="bus-around-router">
+    <bus-tip top="0"
+             text="刷新路线成功"
+             :show.sync="showTip" />
+    <scroll-view class="bus-around-router__scroll"
+                 scroll-y
+                 @scrolltoupper="scrolltoupperHandler">
+      <view class="bus-around-router__hd">附近公交：</view>
+      <view class="bus-around-router__fail"
+            v-if="fail">
+        <button type="primary"
+                class="bus-around-router__btn"
+                @click="failHandler">{{ btnText }}</button>
+      </view>
+      <bus-router-list :data="list"
+                       @item-click="selectItemHandler"
+                       v-else />
+    </scroll-view>
+  </view>
 </template>
 
 <script>
+import BusTip from '@/components/tip'
+import { throttle } from '@/js/utils'
 import BusRouterList from '@/components/routerList'
-import { getBusByLocation } from '@/apis/aroundBus'
+import { getBusByLocation } from '@/apis/aroundRouter'
 
 // 失败原因
 const Fail = {
@@ -27,6 +36,7 @@ const Fail = {
 export default {
   name: 'BusAroundBus',
   components: {
+    BusTip,
     BusRouterList
   },
   created() {
@@ -35,7 +45,8 @@ export default {
   data() {
     return {
       list: null,
-      fail: false
+      fail: false,
+      showTip: false
     }
   },
   computed: {
@@ -79,7 +90,8 @@ export default {
     },
     // 查询附件公交
     getRouterNames() {
-      getBusByLocation(this.location)
+      // getBusByLocation(this.location)
+      return getBusByLocation('121.4737,31.23037')
         .then((data) => {
           this.list = data.routerNames
           this.fail = false
@@ -117,18 +129,40 @@ export default {
           this.openSetting()
           break
       }
+    },
+    // 下拉刷新
+    scrolltoupperHandler: throttle(function(event) {
+      this.getRouterNames().then(() => {
+        this.showTip = true
+      })
+    }, 500),
+    selectItemHandler(item) {
+      wx.navigateTo({
+        url: `/pages/routerDetail/main?router=${item}`
+      })
     }
   }
 }
 </script>
 
 <style lang="scss">
-@include b(around-bus) {
+@include b(around-router) {
+  position: relative;
   height: 100%;
   @include e(hd) {
     padding: 15px 10px;
     font-size: $--font-size-base;
     background: $--color-background-light;
+  }
+  @include e(loading) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+  }
+  @include e(scroll) {
+    height: 100%;
   }
 }
 </style>

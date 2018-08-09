@@ -2,7 +2,7 @@
   <view class="bus-index">
     <view class="bus-index__search">
       <view class="bus-index__search-inner"
-            @click="navigateHandler">
+            @click="gotoSeachHandler">
         <text class="bus-index__search-placeholder">搜索</text>
         <icon size="16"
               type="search"
@@ -10,25 +10,27 @@
               class="bus-index__search-icon" />
       </view>
     </view>
-    <view class="bus-index__around-bus">
-      <bus-around-bus />
+    <view class="bus-index__around-router">
+      <bus-around-router />
     </view>
   </view>
 </template>
 
 <script>
-import BusAroundBus from './aroundBus'
+import BusAroundRouter from './aroundRouter'
 
 export default {
   name: 'BusIndex',
   components: {
-    BusAroundBus
+    BusAroundRouter
   },
   data() {
-    return {}
+    return {
+      showLoading: false
+    }
   },
   methods: {
-    navigateHandler() {
+    gotoSeachHandler() {
       wx.navigateTo({
         url: '/pages/search/main'
       })
@@ -65,7 +67,7 @@ export default {
     right: 10px;
     padding: 8px 10px;
   }
-  @include e(around-bus) {
+  @include e(around-router) {
     flex: 1;
     overflow: hidden;
   }

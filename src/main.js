@@ -14,7 +14,11 @@ export default {
   // 这个字段走 app.json
   config: {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
-    pages: ['^pages/index/main', 'pages/search/main'],
+    pages: [
+      '^pages/index/main', // 首页
+      'pages/search/main', // 搜索页
+      'pages/routerDetail/main' // 路线详情页
+    ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#2f54eb',
