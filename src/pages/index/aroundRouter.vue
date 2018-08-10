@@ -10,7 +10,7 @@
       <view class="bus-around-router__fail"
             v-if="fail">
         <button type="primary"
-                class="bus-around-router__btn"
+                class="bus-common__btn--big"
                 @click="failHandler">{{ btnText }}</button>
       </view>
       <bus-router-list :data="list"
@@ -28,6 +28,7 @@ import { getBusByLocation } from '@/apis/aroundRouter'
 
 // 失败原因
 const Fail = {
+  NONE: '',
   API: 'API',
   LOCATION: 'LOCATION',
   PERMISSION: 'PERMISSION'
@@ -45,7 +46,7 @@ export default {
   data() {
     return {
       list: null,
-      fail: false,
+      fail: Fail.NONE,
       showTip: false
     }
   },
@@ -94,7 +95,7 @@ export default {
       return getBusByLocation('121.4737,31.23037')
         .then((data) => {
           this.list = data.routerNames
-          this.fail = false
+          this.fail = Fail.NONE
         })
         .catch((error) => {
           // 请求失败，提示重新请求
@@ -135,7 +136,7 @@ export default {
       this.getRouterNames().then(() => {
         this.showTip = true
       })
-    }, 500),
+    }, 1000),
     selectItemHandler(item) {
       wx.navigateTo({
         url: `/pages/routerDetail/main?router=${item}`
@@ -153,13 +154,6 @@ export default {
     padding: 15px 10px;
     font-size: $--font-size-base;
     background: $--color-background-light;
-  }
-  @include e(loading) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
   }
   @include e(scroll) {
     height: 100%;

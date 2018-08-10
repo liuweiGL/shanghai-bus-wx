@@ -96,32 +96,28 @@ export function getValByPx(val) {
   return /^\d+$/.test(val) ? val + 'px' : val
 }
 
+/**
+ * 节流函数
+ * @param {function} fn
+ * @param {number} delay
+ */
 export function throttle(fn, delay = 0) {
   delay = Number(delay)
   if (typeof fn !== 'function' || typeof delay !== 'number') {
     throw new TypeError()
   }
   let self
-  let callTimer
   let lastCallTime = 0
-  const callFn = function(callArg) {
-    callTimer = setTimeout(function() {
-      fn.apply(self, callArg)
-    }, delay)
-  }
   return function() {
     self = this
     const now = Date.now()
     // 对参数使用slice会阻止某些JavaScript引擎中的优化
     // see detail: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments
-    const callArf =
-      arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
     if (now - lastCallTime > delay) {
-      callFn(callArf)
-    } else {
-      clearTimeout(callTimer)
-      callFn(callArf)
+      const callArg =
+        arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
+      lastCallTime = now
+      fn.apply(self, callArg)
     }
-    lastCallTime = now
   }
 }
