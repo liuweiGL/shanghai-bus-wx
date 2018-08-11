@@ -2,8 +2,10 @@
   <view class="bus-router-detail">
     <block v-if="data">
       <view class="bus-router-detail__hd">
-        <view class="bus-router-detail__info">
+        <view class="bus-router-detail__info bus-router-detail__info--primary">
           <view class="bus-router-detail__name">{{ data.name }}</view>
+          <view class="bus-router-detail__swap bus-icon bus-swap"
+                hover-class="is-hover" />
         </view>
         <view class="bus-router-detail__info">
           <view class="bus-router-detail__time">首班车：{{ data.startTime || '-' }}</view>
@@ -15,10 +17,16 @@
         <scroll-view class="bus-router-detail__list"
                      scroll-y>
           <view class="bus-router-detail__item"
+                :class="currentIndex === index ? 'is-active':''"
                 v-for="(item,index) in data.stations"
-                :key="index">
-            <text>{{ item.name }}</text>
-            <view class="iconfont icon-arrowdown" />
+                :key="index"
+                @click="searchStopHandler(index)">
+            <view class="bus-router-detail__station">
+              <text>{{ item.name }}</text>
+              <view class="bus-router-detail__right bus-icon bus-right" />
+            </view>
+            <bus-stop :station="station"
+                      v-if="currentIndex === index" />
           </view>
         </scroll-view>
       </view>
@@ -26,7 +34,7 @@
     <view class="bus-router-detail__tips"
           v-else>
       <button type="primary"
-              class="bus-common__btn--big"
+              class="bus-router-detail__btn"
               v-if="fail === 'ERROR'">重新查询</button>
       <icon type="warn"
             v-else-if="fail === 'EMPTY'">没有此公交路线信息</icon>
@@ -34,13 +42,17 @@
   </view>
 </template>
 <script>
+import BusStop from './stop'
 import { getBusByRouter } from '@/apis/routerDetail'
 
 export default {
   name: 'BusRouterDetail',
+  components: {
+    BusStop
+  },
   onLoad() {
     // this.getRouterDetail(this.$root.$mp.query.router)
-    this.getRouterDetail('49路')
+    this.getRouterDetail('1604')
   },
   data() {
     return {
@@ -48,7 +60,9 @@ export default {
       routers: null,
       loading: true,
       isError: false,
-      isEmpty: false
+      isEmpty: false,
+      station: null,
+      currentIndex: null
     }
   },
   methods: {
@@ -59,7 +73,6 @@ export default {
           if (routers && routers.length) {
             this.routers = routers
             this.data = routers[0]
-            console.log(this.data)
           } else {
             this.isEmpty = true
           }
@@ -69,8 +82,8 @@ export default {
           console.log(error)
         })
     },
-    selectItemHandler(index) {
-      console.log(index)
+    searchStopHandler(index) {
+      this.currentIndex = this.currentIndex === index ? null : index
     }
   }
 }
@@ -81,23 +94,36 @@ export default {
   position: relative;
   display: flex;
   flex-flow: column nowrap;
+  height: 100%;
   @include e(hd) {
     flex: none;
+    padding: 15px 10px;
+    background: $--color-background;
+    border-bottom: 1px solid $--color-divider;
   }
-  @include e(hd) {
+  @include e(bd) {
     flex: 1;
     overflow: hidden;
-    padding: 15px 20px;
-    background: $--color-background;
   }
   @include e(info) {
     display: flex;
     padding: 5px 0;
+    @include m(primary) {
+      justify-content: space-between;
+    }
   }
   @include e(name) {
     font-weight: bold;
     color: $--color-title;
-    font-size: $--font-size-base;
+    font-size: $--font-size-h4;
+  }
+  @include e(swap) {
+    padding: 0 10px;
+    color: $--color-primary;
+    font-size: $--font-size-h2;
+    @include when(hover) {
+      color: $--color-primary-lighter;
+    }
   }
   @include e(time) {
     flex: 1;
@@ -113,16 +139,28 @@ export default {
     height: 100%;
   }
   @include e(item) {
+    @include list-item;
+    @include when(active) {
+      color: $--color-title;
+      background: rgba($--color-background,.01);
+    }
+  }
+  @include e(station) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    @include list-item;
+  }
+  @include e(right) {
+    color: $--color-text-light;
   }
   @include e(tips) {
     position: absolute;
     top: 50%;
     left: 0;
     width: 100%;
+  }
+  @include e(btn) {
+    @include big-btn;
   }
 }
 </style>

@@ -10,7 +10,7 @@
       <view class="bus-around-router__fail"
             v-if="fail">
         <button type="primary"
-                class="bus-common__btn--big"
+                class="bus-around-router__btn"
                 @click="failHandler">{{ btnText }}</button>
       </view>
       <bus-router-list :data="list"
@@ -157,6 +157,9 @@ export default {
   }
   @include e(scroll) {
     height: 100%;
+  }
+  @include e(btn){
+    @include big-btn;
   }
 }
 </style>

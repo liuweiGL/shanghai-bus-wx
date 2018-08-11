@@ -1,12 +1,7 @@
-@include b(common) {
-  @include e(btn) {
-    @include m(big) {
-      width: 60%;
-      margin-top: 50px;
-    }
-  }
+@mixin big-btn() {
+  width: 60%;
+  margin-top: 50px;
 }
-
 @mixin list-item() {
   padding: 15px 10px;
   color: $--color-text;
