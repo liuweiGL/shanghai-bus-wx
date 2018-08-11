@@ -153,7 +153,7 @@ export default {
   @include e(hd) {
     padding: 15px 10px;
     font-size: $--font-size-base;
-    background: $--color-background-light;
+    background: $--color-background;
   }
   @include e(scroll) {
     height: 100%;

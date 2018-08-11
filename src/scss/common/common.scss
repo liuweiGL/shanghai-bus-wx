@@ -1,18 +1,18 @@
 @include b(common) {
-  @include e(row) {
-    display: flex;
-    flex-direction: row;
-  }
-  @include e(col) {
-    flex: 1;
-    @include when(fixed) {
-      flex: none;
-    }
-  }
   @include e(btn) {
     @include m(big) {
       width: 60%;
       margin-top: 50px;
     }
+  }
+}
+
+@mixin list-item() {
+  padding: 15px 10px;
+  color: $--color-text;
+  font-size: $--font-size-extra;
+  border-bottom: 0.5px solid $--color-border;
+  @include when(hover) {
+    background: $--color-hover-background-color;
   }
 }

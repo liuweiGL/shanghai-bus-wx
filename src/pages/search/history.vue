@@ -56,7 +56,7 @@ export default {
     justify-content: space-between;
     padding: 5px 0;
     color: $--color-title;
-    background: $--color-background-light;
+    background: $--color-background;
   }
   @include e(title) {
     padding-left: 10px;

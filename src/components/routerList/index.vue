@@ -28,13 +28,7 @@ export default {
 <style lang="scss">
 @include b(router-list) {
   @include e(item) {
-    padding: 15px 10px;
-    color: $--color-text;
-    font-size: $--font-size-base;
-    border-bottom: 0.5px solid $--color-border;
-    @include when(hover) {
-      background: $--color-hover-background-color;
-    }
+    @include list-item;
   }
 }
 </style>
