@@ -1,92 +1,137 @@
 <template>
   <view class="bus-loading">
-    <view class="bus-loading__dot"
-          :style="style1" />
-    <view class="bus-loading__dot"
-          :style="style2" />
-    <view class="bus-loading__dot"
-          :style="style3" />
+    <view class="bus-loading__wrap">
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+      <view class="bus-loading__item"
+            :style="style" />
+    </view>
   </view>
 </template>
+
 <script>
 export default {
   name: 'BusLoading',
-  mounted() {
-    this.show && this.doAnimate()
-  },
   data() {
     return {
-      style1: '',
-      style2: '',
-      style3: '',
-      timer: null
-    }
-  },
-  computed: {
-    style() {
-      return `background:${this.color};`
+      style: ''
     }
   },
   watch: {
-    show(show) {
-      if (show) {
-        this.doAnimate()
-      } else {
-        clearTimeout(this.timer)
+    color: {
+      immediate: true,
+      handler(color) {
+        color && (this.style = `background:${color};`)
       }
     }
   },
-  methods: {
-    translate(style, val, delay) {
-      this[style] = this.style + `opacity:${val};`
-    },
-    doAnimate() {
-      // 第一帧
-      setTimeout(() => {
-        this.translate('style1', 1)
-        this.translate('style2', 0.3)
-        this.translate('style3', 0.3)
-      }, 0)
-      //  第二帧
-      setTimeout(() => {
-        this.translate('style1', 0.3)
-        this.translate('style2', 1)
-        this.translate('style3', 0.3)
-      }, 400)
-      //  第三帧
-      setTimeout(() => {
-        this.translate('style1', 0.3)
-        this.translate('style2', 0.3)
-        this.translate('style3', 1)
-      }, 800)
-      this.timer = setTimeout(this.doAnimate, 1200)
-    }
-  },
   props: {
-    show: {
-      type: Boolean,
-      defalut: false
-    },
     color: {
       type: String,
-      default: '#fff'
+      default: null
     }
   }
 }
 </script>
+
 <style lang="scss">
 @include b(loading) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  @include e(dot) {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin: 0 5px;
-    opacity: 0.5;
-    transition: opacity 0.2s;
+  position: relative;
+  height: 48px;
+  @include e(wrap) {
+    position: absolute;
+    top: 50%;
+    margin-left: 50%;
+    width: 48px;
+    height: 100%;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  @include e(item) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 10px;
+    background: $--color-primary;
+    border-radius: 24%;
+    transform-origin: 2px 26px;
+    animation: bus-loading linear 1s infinite;
+    &:nth-child(1) {
+      transform: rotate(0deg);
+      animation-delay: -0.916666666666667s;
+    }
+    &:nth-child(2) {
+      transform: rotate(30deg);
+      animation-delay: -0.833333333333333s;
+    }
+    &:nth-child(3) {
+      transform: rotate(60deg);
+      animation-delay: -0.75s;
+    }
+    &:nth-child(4) {
+      transform: rotate(90deg);
+      animation-delay: -0.666666666666667s;
+    }
+    &:nth-child(5) {
+      transform: rotate(120deg);
+      animation-delay: -0.583333333333333s;
+    }
+    &:nth-child(6) {
+      transform: rotate(150deg);
+      animation-delay: -0.5s;
+    }
+    &:nth-child(7) {
+      transform: rotate(180deg);
+      animation-delay: -0.416666666666667s;
+    }
+    &:nth-child(8) {
+      transform: rotate(210deg);
+      animation-delay: -0.333333333333333s;
+    }
+    &:nth-child(9) {
+      transform: rotate(240deg);
+      animation-delay: -0.25s;
+    }
+    &:nth-child(10) {
+      transform: rotate(270deg);
+      animation-delay: -0.166666666666667s;
+    }
+    &:nth-child(11) {
+      transform: rotate(300deg);
+      animation-delay: -0.083333333333333s;
+    }
+    &:nth-child(12) {
+      transform: rotate(330deg);
+      animation-delay: 0s;
+    }
+  }
+  @keyframes bus-loading {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 }
 </style>

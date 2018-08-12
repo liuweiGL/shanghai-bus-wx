@@ -121,3 +121,15 @@ export function throttle(fn, delay = 0) {
     }
   }
 }
+
+/**
+ * 左边填充 `0`
+ * @param {string} str
+ * @param {number} len
+ */
+export function paddingLeftZero(str, len = 2) {
+  while (str.toString().length < len) {
+    str = '0' + str
+  }
+  return str
+}

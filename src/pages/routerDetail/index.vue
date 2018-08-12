@@ -5,7 +5,8 @@
         <view class="bus-router-detail__info bus-router-detail__info--primary">
           <view class="bus-router-detail__name">{{ data.name }}</view>
           <view class="bus-router-detail__swap bus-icon bus-swap"
-                hover-class="is-hover" />
+                hover-class="is-hover"
+                @click="swapRouterHandler" />
         </view>
         <view class="bus-router-detail__info">
           <view class="bus-router-detail__time">首班车：{{ data.startTime || '-' }}</view>
@@ -22,8 +23,9 @@
                 :key="index"
                 @click="searchStopHandler(index)">
             <view class="bus-router-detail__station">
-              <text>{{ item.name }}</text>
-              <view class="bus-router-detail__right bus-icon bus-right" />
+              <text>{{ item }}</text>
+              <view class="bus-router-detail__right bus-icon"
+                    :class="currentIndex === index ? 'bus-down' : 'bus-right'" />
             </view>
             <bus-stop :station="station"
                       v-if="currentIndex === index" />
@@ -31,48 +33,52 @@
         </scroll-view>
       </view>
     </block>
-    <view class="bus-router-detail__tips"
-          v-else>
-      <button type="primary"
-              class="bus-router-detail__btn"
-              v-if="fail === 'ERROR'">重新查询</button>
-      <icon type="warn"
-            v-else-if="fail === 'EMPTY'">没有此公交路线信息</icon>
-    </view>
+    <bus-query-empty v-else-if="isEmpty" />
+    <bus-query-error :reload="getRouterDetail"
+                     v-else-if="isError" />
   </view>
 </template>
 <script>
 import BusStop from './stop'
+import BusQueryEmpty from '@/components/queryEmpty'
+import BusQueryError from '@/components/queryError'
 import { getBusByRouter } from '@/apis/routerDetail'
 
 export default {
   name: 'BusRouterDetail',
   components: {
-    BusStop
+    BusStop,
+    BusQueryEmpty,
+    BusQueryError
   },
   onLoad() {
-    // this.getRouterDetail(this.$root.$mp.query.router)
-    this.getRouterDetail('1604')
+    this.getRouterDetail()
+  },
+  beforeDestroy() {
+    console.log('1111')
+    this.request.abort()
   },
   data() {
     return {
       data: null,
-      routers: null,
+      request: null,
+      station: null,
       loading: true,
       isError: false,
       isEmpty: false,
-      station: null,
+      direction: 0,
       currentIndex: null
     }
   },
   methods: {
-    getRouterDetail(router) {
-      getBusByRouter(router)
+    // 获取公交详情
+    getRouterDetail() {
+      wx.showLoading()
+      this.request = getBusByRouter(this.$root.$mp.query.router)
         .then((data) => {
-          const { routers } = data
-          if (routers && routers.length) {
-            this.routers = routers
-            this.data = routers[0]
+          if (data) {
+            this.isEmpty = false
+            this.data = data
           } else {
             this.isEmpty = true
           }
@@ -81,9 +87,36 @@ export default {
           this.isError = true
           console.log(error)
         })
+        .always(() => {
+          wx.hideLoading()
+        })
     },
+    // 查询到站信息
     searchStopHandler(index) {
-      this.currentIndex = this.currentIndex === index ? null : index
+      if (this.currentIndex === index) {
+        this.currentIndex = null
+      } else {
+        this.currentIndex = index
+        this.station = {
+          sid: this.data.sid,
+          direction: this.direction,
+          stationIndex: index + 1
+        }
+      }
+    },
+    // 反转路线
+    swapRouterHandler() {
+      const {
+        data,
+        data: { name, stations }
+      } = this
+      this.currentIndex = null
+      this.direction = this.direction ? 0 : 1
+      this.data = {
+        ...data,
+        stations: stations.slice().reverse(),
+        name: name.replace(/(?:(\()(.*?)(--)(.*)(\)))/, '$1$4$3$2$5')
+      }
     }
   }
 }
@@ -142,7 +175,7 @@ export default {
     @include list-item;
     @include when(active) {
       color: $--color-title;
-      background: rgba($--color-background,.01);
+      background: rgba($--color-background, 0.01);
     }
   }
   @include e(station) {
@@ -152,15 +185,6 @@ export default {
   }
   @include e(right) {
     color: $--color-text-light;
-  }
-  @include e(tips) {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-  }
-  @include e(btn) {
-    @include big-btn;
   }
 }
 </style>

@@ -1,6 +1,5 @@
 @import 'function';
 
-
 /* BEM
  -------------------------- */
 @mixin b($block) {
@@ -23,22 +22,29 @@
       $unit +
       ','};
   }
-
-  @if hitAllSpecialNestRule($selector) {
-    @at-root {
-      #{$selector} {
-        #{$currentSelector} {
-          @content;
-        }
-      }
-    }
-  } @else {
-    @at-root {
+  @at-root {
+    #{$selector} {
       #{$currentSelector} {
         @content;
       }
     }
   }
+
+  // @if hitAllSpecialNestRule($selector) {
+  //   @at-root {
+  //     #{$selector} {
+  //       #{$currentSelector} {
+  //         @content;
+  //       }
+  //     }
+  //   }
+  // } @else {
+  //   @at-root {
+  //     #{$currentSelector} {
+  //       @content;
+  //     }
+  //   }
+  // }
 }
 
 @mixin m($modifier) {

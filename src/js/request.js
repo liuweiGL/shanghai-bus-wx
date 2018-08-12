@@ -2,8 +2,8 @@ import { resolveUrl } from '@/js/utils'
 
 // 请求状态
 const Status = {
-  SUCCESS: 'SUCCESS',
-  FAIL: 'FAIL'
+  SUCCESS: 1,
+  FAIL: 0
 }
 
 class Request {
@@ -31,31 +31,35 @@ class Request {
         Object.assign(this.options, {
           success: (response) => {
             const {
-              data: resData,
               data: { status, data }
             } = response
-            if (status.toUpperCase() === Status.SUCCESS) {
+            if (status === Status.SUCCESS) {
               resolve(data)
             } else {
-              reject(resData)
+              reject(data)
             }
           },
           fail: (error) => reject(error)
         })
       )
     })
+    return this
   }
   abort() {
     this.requestTask.abort()
+    return this
   }
   then(fn) {
-    return this.promise.then(fn)
+    this.promise.then(fn)
+    return this
   }
   catch(fn) {
-    return this.promise.then(null, fn)
+    this.promise.then(null, fn)
+    return this
   }
   always(fn) {
-    return this.promise.then(fn, fn)
+    this.promise.then(fn, fn)
+    return this
   }
 }
 

@@ -94,7 +94,7 @@ export default {
       // getBusByLocation(this.location)
       return getBusByLocation('121.4737,31.23037')
         .then((data) => {
-          this.list = data.routerNames
+          this.list = data
           this.fail = Fail.NONE
         })
         .catch((error) => {
@@ -159,7 +159,8 @@ export default {
     height: 100%;
   }
   @include e(btn){
-    @include big-btn;
+    width: 60%;
+    margin-top: 100px;
   }
 }
 </style>
