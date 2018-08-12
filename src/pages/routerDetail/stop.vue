@@ -7,7 +7,7 @@
             v-for="(item,index) in data"
             :key="index">
         <bus-count :format="format"
-                   :date="item.time * 1000" />
+                   :date="parseInt(item.time) * 1000" />
         <view class="bus-stop__extra-info">
           <view class="bus-stop__station-num">剩余{{ item.stationSum }}站</view>
           <view class="bus-stop__distance">约{{ item.distance }}米</view>
@@ -17,7 +17,9 @@
     </scroll-view>
     <view class="bus-stop__reload"
           v-else-if="isError">
-      <button type="primary">重新查询</button>
+      <button type="primary"
+              size="mini"
+              @click.stop="queryStopInfo">重新查询</button>
     </view>
     <view class="bus-stop__empty"
           v-else>
@@ -39,7 +41,7 @@ export default {
     BusLoading
   },
   created() {
-    this.init()
+    this.queryStopInfo()
   },
   beforeDestroy() {
     this.request.abort()
@@ -48,30 +50,29 @@ export default {
     return {
       data: null,
       request: null,
-      loading: true,
+      loading: false,
       isError: false
     }
   },
   methods: {
-    init() {
-      const { station } = this
-      if (!station) {
-        return
-      }
-      this.request = getStopInfo(station)
+    queryStopInfo() {
+      this.loading = true
+      this.request = getStopInfo(this.station)
         .then((data) => {
           this.$nextTick(() => {
             this.data = data
           })
         })
         .catch((error) => {
+          console.log(error)
           this.$nextTick(() => {
             this.isError = true
           })
-          console.log(error)
         })
         .always(() => {
-          this.loading = false
+          setTimeout(() => {
+            this.loading = false
+          }, 200)
         })
     },
     format(value) {

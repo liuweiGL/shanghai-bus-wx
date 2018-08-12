@@ -74,7 +74,7 @@ export default {
     height: 10px;
     background: $--color-primary;
     border-radius: 24%;
-    transform-origin: 2px 26px;
+    transform-origin: 2px 24px;
     animation: bus-loading linear 1s infinite;
     &:nth-child(1) {
       transform: rotate(0deg);

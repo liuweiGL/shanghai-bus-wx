@@ -12,7 +12,6 @@ export default {
   name: 'BusRouterList',
   methods: {
     itemClickHandler(item) {
-      console.log(item)
       this.$emit('item-click', item)
     }
   },

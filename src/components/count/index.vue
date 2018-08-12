@@ -3,7 +3,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'BusCount',
   beforeDestroy() {
@@ -14,7 +13,7 @@ export default {
       text: '',
       value: 0,
       timer: null,
-      lastTime: Date.now()
+      lastTime: null
     }
   },
   watch: {
@@ -31,8 +30,6 @@ export default {
       }
       if (date instanceof Date) {
         this.value = date.getTime()
-      } else if (typeof date === 'string') {
-        this.value = new Date(date).getTime()
       } else {
         this.value = parseInt(date)
       }
@@ -40,8 +37,10 @@ export default {
     },
     run() {
       const now = Date.now()
-      const { value, lastTime, run, format } = this
-      this.value = Math.max(0, value - (now - lastTime))
+      let { value, lastTime, run, format } = this
+      // 第一次 `lastTime` 还没初始化
+      value = Math.max(0, value - (now - (lastTime || now)))
+      this.value = value
       this.lastTime = now
       this.text = format(value)
       if (this.value > 0) {

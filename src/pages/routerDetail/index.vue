@@ -44,6 +44,18 @@ import BusQueryEmpty from '@/components/queryEmpty'
 import BusQueryError from '@/components/queryError'
 import { getBusByRouter } from '@/apis/routerDetail'
 
+const createData = function() {
+  return {
+    data: null,
+    request: null,
+    station: null,
+    loading: true,
+    isError: false,
+    isEmpty: false,
+    direction: 0,
+    currentIndex: null
+  }
+}
 export default {
   name: 'BusRouterDetail',
   components: {
@@ -52,23 +64,15 @@ export default {
     BusQueryError
   },
   onLoad() {
+    // 重置数据源
+    this.$setData(createData())
     this.getRouterDetail()
   },
-  beforeDestroy() {
-    console.log('1111')
+  onUnload() {
     this.request.abort()
   },
   data() {
-    return {
-      data: null,
-      request: null,
-      station: null,
-      loading: true,
-      isError: false,
-      isEmpty: false,
-      direction: 0,
-      currentIndex: null
-    }
+    return createData()
   },
   methods: {
     // 获取公交详情
