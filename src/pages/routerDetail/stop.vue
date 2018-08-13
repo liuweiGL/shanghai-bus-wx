@@ -96,7 +96,7 @@ export default {
 <style lang="scss">
 @include b(stop) {
   position: relative;
-  padding-top: 10px;
+  padding-bottom: 15px;
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
@@ -106,6 +106,7 @@ export default {
     color: $--color-text-light;
     font-size: $--font-size-desc;
     background: $--color-white;
+    border-radius: 4px;
     & + .bus-stop__card {
       margin-left: 10px;
     }

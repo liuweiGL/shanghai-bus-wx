@@ -23,8 +23,9 @@
                 :key="index"
                 @click="searchStopHandler(index)">
             <view class="bus-router-detail__station">
-              <text>{{ item }}</text>
-              <view class="bus-router-detail__right bus-icon bus-star" />
+              <text class="bus-router-detail__label">{{ item }}</text>
+              <view class="bus-router-detail__icon bus-icon bus-star"
+                    @click.stop="collectionHandler(index)" />
             </view>
             <bus-stop :station="station"
                       v-if="currentIndex === index" />
@@ -129,6 +130,10 @@ export default {
         name: name.replace(/(?:(\()(.*?)(--)(.*)(\)))/, '$1$4$3$2$5')
       }
     },
+    // 收藏
+    collectionHandler(index) {
+      // 公交名称，站台下标
+    },
     // 查询信息为空，返回
     gobackHandler() {
       wx.navigateBack()
@@ -190,16 +195,22 @@ export default {
     @include list-item;
     @include when(active) {
       color: $--color-title;
-      background: rgba($--color-background, 0.01);
+      background: $--color-table-header;
     }
+    padding: 0;
   }
   @include e(station) {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  @include e(right) {
+  @include e(label) {
+    padding-left: 10px;
+  }
+  @include e(icon) {
+    padding: 15px 10px;
     color: $--color-text-light;
+    font-size: $--font-size-h4;
   }
 }
 </style>
