@@ -7,6 +7,9 @@
     </view>
     <view class="bus-query-empty__row">
       <button class="bus-query-empty__btn"
+              type="primary"
+              size="mini"
+              plain
               @click="gobak">返回</button>
     </view>
   </view>
@@ -33,7 +36,7 @@ export default {
     align-items: flex-end;
     justify-content: center;
     color: $--color-text;
-    & + .bus-query-error__row {
+    & + & {
       margin-top: 20px;
     }
   }
@@ -41,7 +44,7 @@ export default {
     margin-left: 5px;
   }
   @include e(btn) {
-    width: 50%;
+    padding: 4px 12px;
   }
 }
 </style>

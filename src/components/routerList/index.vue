@@ -12,12 +12,19 @@ export default {
   name: 'BusRouterList',
   methods: {
     itemClickHandler(item) {
-      this.$emit('item-click', item)
+      typeof this.selectHandler === 'function' && this.selectHandler(item)
+      wx.navigateTo({
+        url: `/pages/routerDetail/main?router=${item}`
+      })
     }
   },
   props: {
     data: {
       type: Array,
+      default: null
+    },
+    selectHandler: {
+      type: Function,
       default: null
     }
   }

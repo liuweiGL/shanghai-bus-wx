@@ -61,10 +61,11 @@ export default {
   @include e(wrap) {
     position: absolute;
     top: 50%;
+    left: 0;
     margin-left: 50%;
     width: 48px;
     height: 100%;
-    transform: translate(-50%, -50%) scale(0.5);
+    transform: translate(-25%, -50%) scale(0.5);
   }
   @include e(item) {
     position: absolute;

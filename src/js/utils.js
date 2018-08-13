@@ -97,7 +97,7 @@ export function getValByPx(val) {
 }
 
 /**
- * 节流函数
+ * 简单节流函数
  * @param {function} fn
  * @param {number} delay
  */
@@ -106,19 +106,37 @@ export function throttle(fn, delay = 0) {
   if (typeof fn !== 'function' || typeof delay !== 'number') {
     throw new TypeError()
   }
-  let self
   let lastCallTime = 0
   return function() {
-    self = this
     const now = Date.now()
     // 对参数使用slice会阻止某些JavaScript引擎中的优化
     // see detail: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments
     if (now - lastCallTime > delay) {
-      const callArg =
+      const callArgs =
         arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
       lastCallTime = now
-      fn.apply(self, callArg)
+      return fn.apply(this, callArgs)
     }
+  }
+}
+
+/**
+ * 简单节流函数
+ * @param {function} fn
+ * @param {number} delay
+ */
+export function debounce(fn, delay = 50) {
+  let timer
+  return function() {
+    let result
+    const self = this
+    const callArgs =
+    arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
+    clearTimeout(timer)
+    timer = setTimeout(function() {
+      result = fn.apply(self, callArgs)
+    }, delay)
+    return result
   }
 }
 

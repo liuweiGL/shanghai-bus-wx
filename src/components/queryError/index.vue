@@ -8,6 +8,8 @@
     <view class="bus-query-error__row">
       <button class="bus-query-error__btn"
               type="primary"
+              size="mini"
+              plain
               @click="reload">重新加载</button>
     </view>
 
@@ -46,7 +48,7 @@ export default {
     font-size: $--font-size-h4;
   }
   @include e(btn) {
-    width: 50%;
+    padding: 4px 12px;
   }
 }
 </style>

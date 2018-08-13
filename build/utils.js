@@ -40,7 +40,7 @@ exports.cssLoaders = function(options) {
   let sassResourceLoader = {
     loader: 'sass-resources-loader',
     options: {
-      resources: [path.resolve(__dirname, '../src/scss/index.scss')]
+      resources: [path.resolve(__dirname, '../src/scss/global.scss')]
     }
   }
 

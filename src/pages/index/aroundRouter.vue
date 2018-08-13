@@ -1,20 +1,23 @@
 <template>
   <view class="bus-around-router">
-    <bus-tip top="0"
-             text="刷新路线成功"
-             :show.sync="showTip" />
     <scroll-view class="bus-around-router__scroll"
-                 scroll-y
-                 @scrolltoupper="scrolltoupperHandler">
-      <view class="bus-around-router__hd">附近公交：</view>
+                 scroll-y>
+      <view class="bus-around-router__hd">
+        <text class="bus-around-router__text">附近公交：</text>
+        <view class="bus-around-router__icon bus-icon bus-sync"
+              hover-class="is-hover"
+              @click="refreshHandler" />
+      </view>
+      <bus-loading v-if="loading" />
       <view class="bus-around-router__fail"
-            v-if="fail">
-        <button type="primary"
-                class="bus-around-router__btn"
+            v-else-if="fail">
+        <button class="bus-around-router__btn"
+                type="primary"
+                size="mini"
+                plain
                 @click="failHandler">{{ btnText }}</button>
       </view>
       <bus-router-list :data="list"
-                       @item-click="selectItemHandler"
                        v-else />
     </scroll-view>
   </view>
@@ -23,6 +26,7 @@
 <script>
 import BusTip from '@/components/tip'
 import { throttle } from '@/js/utils'
+import BusLoading from '@/components/loading'
 import BusRouterList from '@/components/routerList'
 import { getBusByLocation } from '@/apis/aroundRouter'
 
@@ -38,6 +42,7 @@ export default {
   name: 'BusAroundBus',
   components: {
     BusTip,
+    BusLoading,
     BusRouterList
   },
   created() {
@@ -47,7 +52,7 @@ export default {
     return {
       list: null,
       fail: Fail.NONE,
-      showTip: false
+      loading: false
     }
   },
   computed: {
@@ -91,15 +96,19 @@ export default {
     },
     // 查询附件公交
     getRouterNames() {
-      // getBusByLocation(this.location)
-      return getBusByLocation('121.4737,31.23037')
+      this.loading = true
+      return getBusByLocation(this.location)
         .then((data) => {
           this.list = data
           this.fail = Fail.NONE
+          this.loading = false
         })
         .catch((error) => {
           // 请求失败，提示重新请求
-          this.fail = Fail.API
+          setTimeout(() => {
+            this.fail = Fail.API
+            this.loading = false
+          }, 200)
           console.log(error)
         })
     },
@@ -131,17 +140,16 @@ export default {
           break
       }
     },
-    // 下拉刷新
-    scrolltoupperHandler: throttle(function(event) {
+    // 刷新
+    refreshHandler: throttle(function(event) {
       this.getRouterNames().then(() => {
-        this.showTip = true
+        wx.showToast({
+          title: '更新成功',
+          icon: 'success',
+          duration: 1000
+        })
       })
-    }, 1000),
-    selectItemHandler(item) {
-      wx.navigateTo({
-        url: `/pages/routerDetail/main?router=${item}`
-      })
-    }
+    }, 1000)
   }
 }
 </script>
@@ -151,15 +159,33 @@ export default {
   position: relative;
   height: 100%;
   @include e(hd) {
-    padding: 15px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: $--font-size-base;
     background: $--color-background;
+  }
+  @include e(text) {
+    padding-left: 10px;
+  }
+  @include e(icon) {
+    padding: 15px 10px;
+    color: $--color-primary;
+    @include when(hover) {
+      color: $--color-primary-lighter;
+    }
   }
   @include e(scroll) {
     height: 100%;
   }
-  @include e(btn){
-    width: 60%;
+  @include e(fail) {
+    text-align: center;
+  }
+  @include e(btn) {
+    padding: 4px 12px;
+    margin-top: 100px;
+  }
+  .bus-loading {
     margin-top: 100px;
   }
 }

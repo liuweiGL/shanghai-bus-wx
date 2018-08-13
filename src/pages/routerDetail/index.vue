@@ -65,11 +65,11 @@ export default {
   },
   onLoad() {
     // 重置数据源
-    this.$setData(createData())
     this.getRouterDetail()
   },
   onUnload() {
-    this.request.abort()
+    this.$setData(createData())
+    this.request && this.request.abort()
   },
   data() {
     return createData()
@@ -110,10 +110,7 @@ export default {
     },
     // 反转路线
     swapRouterHandler() {
-      const {
-        data,
-        data: { name, stations }
-      } = this
+      const { data, data: { name, stations } } = this
       this.currentIndex = null
       this.direction = this.direction ? 0 : 1
       this.data = {

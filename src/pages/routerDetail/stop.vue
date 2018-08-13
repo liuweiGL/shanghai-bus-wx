@@ -19,6 +19,7 @@
           v-else-if="isError">
       <button type="primary"
               size="mini"
+              plain
               @click.stop="queryStopInfo">重新查询</button>
     </view>
     <view class="bus-stop__empty"
@@ -119,6 +120,11 @@ export default {
   }
   @include e(plate-number) {
     text-align: center;
+  }
+  @include e(reload) {
+    display: flex;
+    align-items: center;
+    height: 48px;
   }
   @include e(empty) {
     display: flex;

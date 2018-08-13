@@ -5,6 +5,10 @@ page {
     'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
+button[size='mini'] {
+  font-size: $--font-size-extra;
+}
+
 button[type='primary'] {
   color: #ffffff;
   background-color: $--color-primary;
@@ -13,16 +17,8 @@ button[type='primary'] {
   }
 }
 
-button[size='mini'] {
-  font-size: $--font-size-extra;
-}
-
-@mixin list-item() {
-  padding: 15px 10px;
-  color: $--color-text;
-  font-size: $--font-size-extra;
-  border-bottom: 0.5px solid $--color-border;
-  @include when(hover) {
-    background: $--color-hover-background-color;
-  }
+button[type='primary'][plain] {
+  color: $--color-primary;
+  border: 1px solid $--color-primary;
+  background-color: transparent;
 }

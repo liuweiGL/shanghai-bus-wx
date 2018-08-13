@@ -1,47 +1,68 @@
 <template>
   <view class="bus-search-history">
-    <view class="bus-search-history__hd">
-      <text class="bus-search-history__title">搜索历史：</text>
-      <button size="mini"
-              class="bus-search-history__btn"
-              hover-class="is-hover"
-              plain>清除</button>
-    </view>
-    <bus-router-list :data="list" />
+    <scroll-view class="bus-search-scroll"
+                 scroll-y>
+      <view class="bus-search-history__hd">
+        <text class="bus-search-history__title">搜索历史：</text>
+        <button size="mini"
+                class="bus-search-history__btn"
+                hover-class="is-hover"
+                plain
+                @click="clearHistoryHandler">清除</button>
+      </view>
+      <bus-router-list :data="data" />
+    </scroll-view>
   </view>
 </template>
 <script>
+import Store from '@/js/store'
+import { throttle } from '@/js/utils'
 import BusRouterList from '@/components/routerList/index'
+
+const localKey = 'bus_search_history'
 
 export default {
   name: 'BusComponentSearchHistory',
   components: {
     BusRouterList
   },
+  onLoad() {
+    Store.get(localKey).then((data) => {
+      this.data = data
+    })
+  },
+  onUnload() {
+    // 页面离开时，保存数据到本地
+    Store.set(localKey, this.data)
+  },
   data() {
     return {
-      list: Array.from({ length: 5 }).map((item, index) => {
-        return {
-          name: '公交路线' + index,
-          desc: '-'
-        }
-      })
+      data: null
     }
   },
   watch: {
-    router: 'addItem'
+    searchValue: 'addItem'
   },
   methods: {
     addItem() {
-      // const {router,list}=this
+      const { data, searchValue } = this
+      if (!searchValue) {
+        return
+      }
+      if (!data) {
+        this.data = [searchValue]
+      } else if (!data.includes(searchValue)) {
+        data.push(searchValue)
+      }
     },
-    itemClickHandler(item) {
-      this.$emit('select', item)
-    }
+    clearHistoryHandler: throttle(function() {
+      this.data = null
+      Store.remove(localKey)
+    }, 2000)
   },
   props: {
-    router: {
-      type: Object,
+    searchValue: {
+      type: String,
       default: null
     }
   }
@@ -50,6 +71,11 @@ export default {
 
 <style lang="scss">
 @include b(search-history) {
+  flex: 1;
+  overflow: hidden;
+  @include e(scroll) {
+    height: 100%;
+  }
   @include e(hd) {
     display: flex;
     align-items: center;
@@ -63,12 +89,14 @@ export default {
     font-size: $--font-size-base;
   }
   @include e(btn) {
-    margin: 0;
-    color: $--color-primary;
-    border: none;
-    border-radius: 0;
-    @include when(hover) {
-      color: $--color-primary-light;
+    &[plain] {
+      margin: 0;
+      color: $--color-primary;
+      border: none;
+      border-radius: 0;
+      @include when(hover) {
+        color: $--color-primary-light;
+      }
     }
   }
 }
