@@ -9,9 +9,9 @@
                 @click="swapRouterHandler" />
         </view>
         <view class="bus-router-detail__info">
-          <view class="bus-router-detail__time">首班车：{{ data.startTime || '-' }}</view>
-          <view class="bus-router-detail__time">末班车：{{ data.endTime || '-' }}</view>
-          <view class="bus-router-detail__price">票价：￥{{ data.price|| '-' }}</view>
+          <view class="bus-router-detail__time">首班车：{{ data.startTime }}</view>
+          <view class="bus-router-detail__time">末班车：{{ data.endTime }}</view>
+          <view class="bus-router-detail__price">票价：￥{{ data.price }}</view>
         </view>
       </view>
       <view class="bus-router-detail__bd">
@@ -24,8 +24,7 @@
                 @click="searchStopHandler(index)">
             <view class="bus-router-detail__station">
               <text>{{ item }}</text>
-              <view class="bus-router-detail__right bus-icon"
-                    :class="currentIndex === index ? 'bus-down' : 'bus-right'" />
+              <view class="bus-router-detail__right bus-icon bus-star" />
             </view>
             <bus-stop :station="station"
                       v-if="currentIndex === index" />
@@ -33,26 +32,30 @@
         </scroll-view>
       </view>
     </block>
-    <bus-query-empty v-else-if="isEmpty" />
-    <bus-query-error :reload="getRouterDetail"
-                     v-else-if="isError" />
+    <bus-alert msg="没有此公交信息"
+               button-text="返回"
+               @click="gobackHandler"
+               v-else-if="isEmpty" />
+    <bus-alert type="error"
+               msg="查询失败"
+               button-text="重新查询"
+               @click="getRouterDetail"
+               v-else-if="isError" />
   </view>
 </template>
 <script>
 import BusStop from './stop'
-import BusQueryEmpty from '@/components/queryEmpty'
-import BusQueryError from '@/components/queryError'
+import BusAlert from '@/components/alert'
 import { getBusByRouter } from '@/apis/routerDetail'
 
 const createData = function() {
   return {
     data: null,
+    direction: 0,
     request: null,
     station: null,
-    loading: true,
     isError: false,
     isEmpty: false,
-    direction: 0,
     currentIndex: null
   }
 }
@@ -60,8 +63,7 @@ export default {
   name: 'BusRouterDetail',
   components: {
     BusStop,
-    BusQueryEmpty,
-    BusQueryError
+    BusAlert
   },
   onLoad() {
     // 重置数据源
@@ -75,16 +77,21 @@ export default {
     return createData()
   },
   methods: {
+    // 时间格式化
+    timeFormat(value) {
+      return value ? value.replace(/(^.{2})/, '$1:') : '-'
+    },
     // 获取公交详情
     getRouterDetail() {
       wx.showLoading()
       this.request = getBusByRouter(this.$root.$mp.query.router)
         .then((data) => {
+          this.data = data
+          this.isEmpty = !data
           if (data) {
-            this.isEmpty = false
-            this.data = data
-          } else {
-            this.isEmpty = true
+            data.startTime = this.timeFormat(data.startTime)
+            data.endTime = this.timeFormat(data.endTime)
+            data.price = data.price || '-'
           }
         })
         .catch((error) => {
@@ -110,7 +117,10 @@ export default {
     },
     // 反转路线
     swapRouterHandler() {
-      const { data, data: { name, stations } } = this
+      const {
+        data,
+        data: { name, stations }
+      } = this
       this.currentIndex = null
       this.direction = this.direction ? 0 : 1
       this.data = {
@@ -118,6 +128,10 @@ export default {
         stations: stations.slice().reverse(),
         name: name.replace(/(?:(\()(.*?)(--)(.*)(\)))/, '$1$4$3$2$5')
       }
+    },
+    // 查询信息为空，返回
+    gobackHandler() {
+      wx.navigateBack()
     }
   }
 }

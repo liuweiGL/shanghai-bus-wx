@@ -24,11 +24,6 @@ export default {
   components: {
     BusAroundRouter
   },
-  data() {
-    return {
-      showLoading: false
-    }
-  },
   methods: {
     gotoSeachHandler() {
       wx.navigateTo({

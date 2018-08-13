@@ -1,0 +1,18 @@
+@include share-rule(center-row){
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+@include share-rule(middle-col){
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+@include share-rule(small-btn) {
+  padding: 4px 12px;
+  margin-top: 100px;
+}

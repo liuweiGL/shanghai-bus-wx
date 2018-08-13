@@ -11,12 +11,37 @@
       <bus-loading v-if="loading" />
       <view class="bus-around-router__fail"
             v-else-if="fail">
+        <!-- 可以使用 `button` 打开设置面板 -->
+        <button class="bus-around-router__btn"
+                open-type="openSetting"
+                type="primary"
+                size="mini"
+                plain
+                @error="errorHandler"
+                @opensetting="openSettingHandler"
+                v-if="!canIUse && fial === 'PERMISSION'">{{ btnText }}</button>
+        <!-- 可以使用 `button` 打开反馈页面 -->
+        <button class="bus-around-router__btn"
+                open-type="feedback"
+                type="primary"
+                size="mini"
+                plain
+                v-else-if="!canIUse && fial === 'EXCEPTION'">{{ btnText }}</button>
+        <!-- `button` 暂不支持开放能力 -->
+        <bus-alert type="warn"
+                   msg="请升级微信版本"
+                   v-else-if="canIUse && fail === 'EXCEPTION'" />
+        <!-- 可以使用 `api` 直接打开设置页面 -->
         <button class="bus-around-router__btn"
                 type="primary"
                 size="mini"
                 plain
-                @click="failHandler">{{ btnText }}</button>
+                @click="otherFailHandler"
+                v-else>{{ btnText }}</button>
       </view>
+
+      <bus-alert msg="附近没有公交"
+                 v-else-if="isEmpty" />
       <bus-router-list :data="list"
                        v-else />
     </scroll-view>
@@ -24,8 +49,8 @@
 </template>
 
 <script>
-import BusTip from '@/components/tip'
 import { throttle } from '@/js/utils'
+import BusAlert from '@/components/alert'
 import BusLoading from '@/components/loading'
 import BusRouterList from '@/components/routerList'
 import { getBusByLocation } from '@/apis/aroundRouter'
@@ -35,24 +60,27 @@ const Fail = {
   NONE: '',
   API: 'API',
   LOCATION: 'LOCATION',
-  PERMISSION: 'PERMISSION'
+  PERMISSION: 'PERMISSION',
+  EXCEPTION: 'EXCEPTION'
 }
 
 export default {
   name: 'BusAroundBus',
   components: {
-    BusTip,
+    BusAlert,
     BusLoading,
     BusRouterList
   },
   created() {
-    this.init()
+    this.getPermission()
   },
   data() {
     return {
       list: null,
       fail: Fail.NONE,
-      loading: false
+      loading: false,
+      isEmpty: false,
+      canIUse: wx.canIUse('openSetting')
     }
   },
   computed: {
@@ -64,13 +92,15 @@ export default {
           return '重新定位'
         case Fail.PERMISSION:
           return '开启定位'
+        case Fail.EXCEPTION:
+          return '报告错误'
         default:
           return ''
       }
     }
   },
   methods: {
-    init() {
+    getPermission() {
       wx.authorize({
         scope: 'scope.userLocation',
         success: this.getLocation, // 用户允许定位
@@ -96,10 +126,14 @@ export default {
     },
     // 查询附件公交
     getRouterNames() {
+      if (!this.location) {
+        return Promise.reject(this.getPermission())
+      }
       this.loading = true
       return getBusByLocation(this.location)
         .then((data) => {
           this.list = data
+          this.isEmpty = !data
           this.fail = Fail.NONE
           this.loading = false
         })
@@ -120,11 +154,12 @@ export default {
           if (authSetting['scope.userLocation']) {
             this.getLocation()
           }
-        }
+        },
+        fail: this.errorHandler
       })
     },
     // 异常情况处理逻辑
-    failHandler() {
+    otherFailHandler() {
       switch (this.fail) {
         case Fail.API:
           // 重新获取数据
@@ -136,9 +171,22 @@ export default {
           break
         case Fail.PERMISSION:
           // 指导用户开启定位权限
-          this.openSetting()
+          this.canIUse && this.openSetting()
           break
       }
+    },
+    // hook `API` 升级
+    openSettingHandler({ authSetting }) {
+      console.log(authSetting)
+      // 用户开启，重新定位
+      if (authSetting['scope.userLocation']) {
+        this.getLocation()
+      }
+    },
+    // 开启失败，打开反馈面板
+    errorHandler(error) {
+      console.log(error)
+      this.fail = Fail.EXCEPTION
     },
     // 刷新
     refreshHandler: throttle(function(event) {
@@ -182,8 +230,7 @@ export default {
     text-align: center;
   }
   @include e(btn) {
-    padding: 4px 12px;
-    margin-top: 100px;
+    @include extend-rule(small-btn);
   }
   .bus-loading {
     margin-top: 100px;
