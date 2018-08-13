@@ -6,7 +6,8 @@
             size="20" />
       <text class="bus-alert__text">{{ msg }}</text>
     </view>
-    <button class="bus-alert__btn" type="primary"
+    <button class="bus-alert__btn"
+            type="primary"
             size="mini"
             plain
             @click="clickHandler"
@@ -14,12 +15,13 @@
   </view>
 </template>
 <script>
+import { throttle } from '@/js/utils'
 export default {
   name: 'BusAlert',
   methods: {
-    clickHandler() {
+    clickHandler: throttle(function() {
       this.$emit('click')
-    }
+    }, 1000)
   },
   props: {
     type: {

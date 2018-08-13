@@ -39,7 +39,7 @@
                 @click="otherFailHandler"
                 v-else>{{ btnText }}</button>
       </view>
-
+      <!-- 无公交数据 -->
       <bus-alert msg="附近没有公交"
                  v-else-if="isEmpty" />
       <bus-router-list :data="list"
@@ -133,7 +133,7 @@ export default {
       return getBusByLocation(this.location)
         .then((data) => {
           this.list = data
-          this.isEmpty = !data
+          this.isEmpty = !(data && data.length)
           this.fail = Fail.NONE
           this.loading = false
         })
@@ -190,13 +190,7 @@ export default {
     },
     // 刷新
     refreshHandler: throttle(function(event) {
-      this.getRouterNames().then(() => {
-        wx.showToast({
-          title: '更新成功',
-          icon: 'success',
-          duration: 1000
-        })
-      })
+      this.getRouterNames()
     }, 1000)
   }
 }
