@@ -4,9 +4,9 @@
       <view class="bus-router-detail__hd">
         <view class="bus-router-detail__info bus-router-detail__info--primary">
           <view class="bus-router-detail__name">{{ data.name }}</view>
-          <view name="bus-swap"
-                class="bus-router-detail__swap"
-                @click="swapRouterHandler" />
+          <bus-icon name="bus-swap"
+                    extra-class="bus-router-detail__swap"
+                    @click="swapRouterHandler" />
         </view>
         <view class="bus-router-detail__info">
           <view class="bus-router-detail__time">首班车：{{ data.startTime }}</view>
