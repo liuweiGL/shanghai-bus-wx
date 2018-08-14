@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { paddingLeftZero } from '@/js/utils'
+
 export default {
   name: 'BusCount',
   beforeDestroy() {
@@ -17,29 +19,21 @@ export default {
     }
   },
   watch: {
-    date: {
+    time: {
       immediate: true,
-      handler: 'dateChangeHandler'
+      handler: 'timeChangeHandler'
     }
   },
   methods: {
-    dateChangeHandler(date) {
-      if (!date) {
-        this.cancel()
-        return
-      }
-      if (date instanceof Date) {
-        this.value = date.getTime()
-      } else {
-        this.value = parseInt(date)
-      }
+    timeChangeHandler(time) {
+      this.value = parseInt(time)
       this.run()
     },
     run() {
       const now = Date.now()
       let { value, lastTime, run, format } = this
       // 第一次 `lastTime` 还没初始化
-      value = Math.max(0, value - (now - (lastTime || now)))
+      value = Math.max(0, value - (now - (lastTime || now)) / 1000)
       this.value = value
       this.lastTime = now
       this.text = format(value)
@@ -47,18 +41,19 @@ export default {
         this.timer = setTimeout(run, 1000)
       }
     },
+    format(value) {
+      const min = Math.floor(value / 60)
+      const sec = Math.floor(value % 60)
+      return `${paddingLeftZero(min)}:${paddingLeftZero(sec)}`
+    },
     cancel() {
       clearTimeout(this.timer)
     }
   },
   props: {
-    date: {
-      type: [Number, String, Date],
+    time: {
+      type: [Number, String],
       default: null
-    },
-    format: {
-      type: Function,
-      required: true
     }
   }
 }

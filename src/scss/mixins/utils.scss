@@ -47,6 +47,6 @@
   font-size: $--font-size-extra;
   border-bottom: 0.5px solid $--color-border;
   @include when(hover) {
-    background: $--color-hover-background-color;
+    background: $--color-table-header;
   }
 }

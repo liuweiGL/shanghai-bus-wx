@@ -2,7 +2,7 @@
   <view class="bus-search">
     <view class="bus-search__hd">
       <input class="bus-search__input"
-             type="text"
+             type="number"
              placeholder="搜索"
              placeholder-class="bus-search__placeholder"
              v-model="searchText"

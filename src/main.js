@@ -29,13 +29,36 @@ export default {
     pages: [
       '^pages/index/main', // 首页
       'pages/search/main', // 搜索页
-      'pages/routerDetail/main' // 路线详情页
+      'pages/routerDetail/main', // 路线详情页
+      'pages/collection/main', // 收藏页
+      'pages/user/main' // 我的
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#2f54eb',
+      navigationBarTextStyle: '#fff',
       navigationBarTitleText: '魔都公交',
-      navigationBarTextStyle: '#fff'
+      navigationBarBackgroundColor: '#2f54eb'
+    },
+    tabBar: {
+      position: 'bottom',
+      borderStyle: 'black',
+      backgroundColor: '#fff',
+      selectedColor: '#2f54eb',
+      color: 'rgba(0, 0, 0, .85)',
+      list: [
+        {
+          pagePath: 'pages/index/main',
+          text: '首页'
+        },
+        {
+          pagePath: 'pages/collection/main',
+          text: '收藏'
+        },
+        {
+          pagePath: 'pages/user/main',
+          text: '我的'
+        }
+      ]
     }
   }
 }

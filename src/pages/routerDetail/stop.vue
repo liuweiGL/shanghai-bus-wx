@@ -7,7 +7,7 @@
             v-for="(item,index) in data"
             :key="index">
         <bus-count :format="format"
-                   :date="parseInt(item.time) * 1000" />
+                   :time="item.time" />
         <view class="bus-stop__extra-info">
           <view class="bus-stop__station-num">剩余{{ item.stationSum }}站</view>
           <view class="bus-stop__distance">约{{ item.distance }}米</view>
@@ -33,7 +33,6 @@
 <script>
 import BusCount from '@/components/count'
 import BusLoading from '@/components/loading'
-import { paddingLeftZero } from '@/js/utils'
 import { getStopInfo } from '@/apis/routerDetail'
 export default {
   name: 'BusStop',
@@ -75,12 +74,6 @@ export default {
             this.loading = false
           }, 200)
         })
-    },
-    format(value) {
-      const total = Math.floor(value / 1000)
-      const min = Math.floor(total / 60)
-      const sec = Math.floor(total % 60)
-      return `${paddingLeftZero(min)}:${paddingLeftZero(sec)}`
     }
   },
   props: {
