@@ -4,6 +4,17 @@ import App from './App'
 // css
 import './scss/index.scss'
 
+// component
+import BusIcon from './components/icon'
+import BusList from './components/list'
+import BusAlert from './components/alert'
+import BusLoading from './components/loading'
+
+Vue.component('bus-icon', BusIcon)
+Vue.component('bus-list', BusList)
+Vue.component('bus-alert', BusAlert)
+Vue.component('bus-loading', BusLoading)
+
 Vue.config.productionTip = false
 App.mpType = 'app'
 
@@ -21,44 +32,3 @@ Vue.prototype.$setData = function(data) {
 
 const app = new Vue(App)
 app.$mount()
-
-export default {
-  // 这个字段走 app.json
-  config: {
-    // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
-    pages: [
-      '^pages/index/main', // 首页
-      'pages/search/main', // 搜索页
-      'pages/routerDetail/main', // 路线详情页
-      'pages/collection/main', // 收藏页
-      'pages/user/main' // 我的
-    ],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarTextStyle: '#fff',
-      navigationBarTitleText: '魔都公交',
-      navigationBarBackgroundColor: '#2f54eb'
-    },
-    tabBar: {
-      position: 'bottom',
-      borderStyle: 'black',
-      backgroundColor: '#fff',
-      selectedColor: '#2f54eb',
-      color: 'rgba(0, 0, 0, .85)',
-      list: [
-        {
-          pagePath: 'pages/index/main',
-          text: '首页'
-        },
-        {
-          pagePath: 'pages/collection/main',
-          text: '收藏'
-        },
-        {
-          pagePath: 'pages/user/main',
-          text: '我的'
-        }
-      ]
-    }
-  }
-}

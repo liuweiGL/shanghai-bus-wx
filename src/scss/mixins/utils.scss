@@ -40,13 +40,3 @@
   white-space: nowrap;
 }
 
-
-@mixin list-item() {
-  padding: 15px 10px;
-  color: $--color-text;
-  font-size: $--font-size-extra;
-  border-bottom: 0.5px solid $--color-border;
-  @include when(hover) {
-    background: $--color-table-header;
-  }
-}

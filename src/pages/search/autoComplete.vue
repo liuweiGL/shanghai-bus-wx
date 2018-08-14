@@ -1,16 +1,12 @@
 <template>
   <view class="bus-auto-complete">
-    <scroll-view class="bus-auto-complete__scroll"
-                 scroll-y>
-      <bus-router-list :data="list"
-                       :select-handler="selectHandler" />
-    </scroll-view>
+    <bus-list :data="list"
+              @item-click="itemclickHandler" />
   </view>
 </template>
 <script>
 import routers from '@/js/routers'
 import { debounce } from '@/js/utils'
-import BusRouterList from '@/components/routerList'
 
 // 把路线名称短的排前面，文字按 `unicode` 排序
 routers.sort((a, b) => {
@@ -20,9 +16,6 @@ routers.sort((a, b) => {
 
 export default {
   name: 'BusAutoComplete',
-  components: {
-    BusRouterList
-  },
   data() {
     return {
       list: null
@@ -35,8 +28,8 @@ export default {
     }
   },
   methods: {
-    selectHandler(item) {
-      this.$emit('input', item)
+    itemclickHandler(item) {
+      this.$emit('item-click', item)
     },
     filterRoutersHandler: debounce(function(searchText) {
       this.list = routers
@@ -61,8 +54,5 @@ export default {
   width: 100%;
   height: 100%;
   background: $--color-white;
-  @include e(scroll) {
-    height: 100%;
-  }
 }
 </style>

@@ -1,18 +1,55 @@
-@include share-rule(center-row){
+@include share-rule(row) {
   display: flex;
   flex-flow: row nowrap;
+}
+@include share-rule(middle-row) {
   align-items: center;
+  @include extend-rule(row);
+}
+@include share-rule(center-row) {
   justify-content: center;
+  @include extend-rule(middle-row);
+}
+@include share-rule(between-row) {
+  justify-content: space-between;
+  @include extend-rule(middle-row);
+}
+@include share-rule(around-row) {
+  justify-content: space-around;
+  @include extend-rule(middle-row);
+}
+@include share-rule(bottom-row){
+  align-items: flex-end;
+  @include extend-rule(center-row);
 }
 
-@include share-rule(middle-col){
+@include share-rule(col) {
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
+}
+@include share-rule(center-col) {
   justify-content: center;
+}
+@include share-rule(middle-col) {
+  align-items: center;
+  @include extend-rule(center-col);
+}
+@include share-rule(bottom-col){
+  align-items: flex-end;
+  @include extend-rule(center-col);
 }
 
 @include share-rule(small-btn) {
   padding: 4px 12px;
   margin-top: 100px;
+}
+
+@include share-rule(list-item) {
+  padding: $--padding;
+  color: $--color-text;
+  font-size: $--font-size-extra;
+  border-bottom: 0.5px solid $--color-border;
+  @include when(hover) {
+    background: $--color-table-header;
+  }
 }

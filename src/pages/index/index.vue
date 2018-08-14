@@ -37,9 +37,8 @@ export default {
 <style lang="scss">
 @include b(index) {
   position: relative;
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  @include extend-rule(col);
   @include e(search) {
     flex: none;
     padding: 20px 10px;

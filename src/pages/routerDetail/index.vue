@@ -4,8 +4,8 @@
       <view class="bus-router-detail__hd">
         <view class="bus-router-detail__info bus-router-detail__info--primary">
           <view class="bus-router-detail__name">{{ data.name }}</view>
-          <view class="bus-router-detail__swap bus-icon bus-swap"
-                hover-class="is-hover"
+          <view name="bus-swap"
+                class="bus-router-detail__swap"
                 @click="swapRouterHandler" />
         </view>
         <view class="bus-router-detail__info">
@@ -24,8 +24,9 @@
                 @click="searchStopHandler(index)">
             <view class="bus-router-detail__station">
               <text class="bus-router-detail__label">{{ item }}</text>
-              <view class="bus-router-detail__icon bus-icon bus-star"
-                    @click.stop="collectionHandler(index)" />
+              <bus-icon name="bus-star"
+                        extra-class="bus-router-detail__icon"
+                        @click="collectionHandler(index)" />
             </view>
             <bus-stop :station="station"
                       v-if="currentIndex === index" />
@@ -46,7 +47,6 @@
 </template>
 <script>
 import BusStop from './stop'
-import BusAlert from '@/components/alert'
 import { getBusByRouter } from '@/apis/routerDetail'
 
 const createData = function() {
@@ -63,8 +63,7 @@ const createData = function() {
 export default {
   name: 'BusRouterDetail',
   components: {
-    BusStop,
-    BusAlert
+    BusStop
   },
   onLoad() {
     // 重置数据源
@@ -133,6 +132,7 @@ export default {
     // 收藏
     collectionHandler(index) {
       // 公交名称，站台下标
+      console.log(index)
     },
     // 查询信息为空，返回
     gobackHandler() {
@@ -145,9 +145,8 @@ export default {
 <style lang="scss">
 @include b(router-detail) {
   position: relative;
-  display: flex;
-  flex-flow: column nowrap;
   height: 100%;
+  @include extend-rule(col);
   @include e(hd) {
     flex: none;
     padding: 15px 10px;
@@ -172,11 +171,6 @@ export default {
   }
   @include e(swap) {
     padding: 0 10px;
-    color: $--color-primary;
-    font-size: $--font-size-h2;
-    @include when(hover) {
-      color: $--color-primary-lighter;
-    }
   }
   @include e(time) {
     flex: 1;
@@ -192,7 +186,7 @@ export default {
     height: 100%;
   }
   @include e(item) {
-    @include list-item;
+    @include extend-rule(list-item);
     @include when(active) {
       color: $--color-title;
       background: $--color-table-header;
@@ -200,9 +194,7 @@ export default {
     padding: 0;
   }
   @include e(station) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    @include extend-rule(between-row);
   }
   @include e(label) {
     padding-left: 10px;

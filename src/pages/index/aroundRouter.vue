@@ -1,58 +1,56 @@
 <template>
   <view class="bus-around-router">
-    <scroll-view class="bus-around-router__scroll"
-                 scroll-y>
-      <view class="bus-around-router__hd">
-        <text class="bus-around-router__text">附近公交：</text>
-        <view class="bus-around-router__icon bus-icon bus-sync"
-              hover-class="is-hover"
-              @click="refreshHandler" />
-      </view>
-      <bus-loading v-if="loading" />
-      <view class="bus-around-router__fail"
-            v-else-if="fail">
-        <!-- 可以使用 `button` 打开设置面板 -->
-        <button class="bus-around-router__btn"
-                open-type="openSetting"
-                type="primary"
-                size="mini"
-                plain
-                @error="errorHandler"
-                @opensetting="openSettingHandler"
-                v-if="!canIUse && fial === 'PERMISSION'">{{ btnText }}</button>
-        <!-- 可以使用 `button` 打开反馈页面 -->
-        <button class="bus-around-router__btn"
-                open-type="feedback"
-                type="primary"
-                size="mini"
-                plain
-                v-else-if="!canIUse && fial === 'EXCEPTION'">{{ btnText }}</button>
-        <!-- `button` 暂不支持开放能力 -->
-        <bus-alert type="warn"
-                   msg="请升级微信版本"
-                   v-else-if="canIUse && fail === 'EXCEPTION'" />
-        <!-- 可以使用 `api` 直接打开设置页面 -->
-        <button class="bus-around-router__btn"
-                type="primary"
-                size="mini"
-                plain
-                @click="otherFailHandler"
-                v-else>{{ btnText }}</button>
-      </view>
-      <!-- 无公交数据 -->
-      <bus-alert msg="附近没有公交"
-                 v-else-if="isEmpty" />
-      <bus-router-list :data="list"
-                       v-else />
-    </scroll-view>
+    <bus-loading v-if="loading" />
+    <view class="bus-around-router__fail"
+          v-else-if="fail">
+      <!-- 可以使用 `button` 打开设置面板 -->
+      <button class="bus-around-router__btn"
+              open-type="openSetting"
+              type="primary"
+              size="mini"
+              plain
+              @error="errorHandler"
+              @opensetting="openSettingHandler"
+              v-if="!canIUse && fial === 'PERMISSION'">{{ btnText }}</button>
+      <!-- 可以使用 `button` 打开反馈页面 -->
+      <button class="bus-around-router__btn"
+              open-type="feedback"
+              type="primary"
+              size="mini"
+              plain
+              v-else-if="!canIUse && fial === 'EXCEPTION'">{{ btnText }}</button>
+      <!-- `button` 暂不支持开放能力 -->
+      <bus-alert type="warn"
+                 msg="请升级微信版本"
+                 v-else-if="canIUse && fail === 'EXCEPTION'" />
+      <!-- 可以使用 `api` 直接打开设置页面 -->
+      <button class="bus-around-router__btn"
+              type="primary"
+              size="mini"
+              plain
+              @click="otherFailHandler"
+              v-else>{{ btnText }}</button>
+    </view>
+    <!-- 无公交数据 -->
+    <bus-alert msg="附近没有公交"
+               v-else-if="isEmpty" />
+    <bus-list :data="list"
+              @item-click="itemClickHandler"
+              v-else>
+      <template slot="title">
+        <view class="bus-around-router__hd">
+          <text class="bus-around-router__text">附近公交：</text>
+          <bus-icon name="bus-sync"
+                    extra-class="bus-around-router__icon"
+                    @click="refreshHandler" />
+        </view>
+      </template>
+    </bus-list>
   </view>
 </template>
 
 <script>
 import { throttle } from '@/js/utils'
-import BusAlert from '@/components/alert'
-import BusLoading from '@/components/loading'
-import BusRouterList from '@/components/routerList'
 import { getBusByLocation } from '@/apis/aroundRouter'
 
 // 失败原因
@@ -66,11 +64,6 @@ const Fail = {
 
 export default {
   name: 'BusAroundBus',
-  components: {
-    BusAlert,
-    BusLoading,
-    BusRouterList
-  },
   created() {
     this.getPermission()
   },
@@ -191,7 +184,13 @@ export default {
     // 刷新
     refreshHandler: throttle(function(event) {
       this.getRouterNames()
-    }, 1000)
+    }, 1000),
+    // 选择 路线 => 详情页
+    itemClickHandler(item) {
+      wx.navigateTo({
+        url: `/pages/routerDetail/main?router=${item}`
+      })
+    }
   }
 }
 </script>
@@ -201,17 +200,15 @@ export default {
   position: relative;
   height: 100%;
   @include e(hd) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     font-size: $--font-size-base;
     background: $--color-background;
+    @include extend-rule(between-row);
   }
   @include e(text) {
     padding-left: 10px;
   }
   @include e(icon) {
-    padding: 15px 10px;
+    padding: $--padding;
     color: $--color-primary;
     @include when(hover) {
       color: $--color-primary-lighter;

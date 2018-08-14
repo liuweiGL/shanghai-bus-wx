@@ -1,7 +1,8 @@
 let path = require('path')
-let fs = require('fs')
 let utils = require('./utils')
 let config = require('../config')
+let relative = require('relative')
+let CopyWebpackPlugin = require('copy-webpack-plugin')
 let vueLoaderConfig = require('./vue-loader.conf')
 let MpvuePlugin = require('webpack-mpvue-asset-plugin')
 let glob = require('glob')
@@ -10,14 +11,13 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function getEntry(rootSrc, pattern) {
-  let files = glob.sync(path.resolve(rootSrc, pattern))
-  return files.reduce((res, file) => {
-    let info = path.parse(file)
-    let key = info.dir.slice(rootSrc.length + 1) + '/' + info.name
-    res[key] = path.resolve(file)
-    return res
-  }, {})
+function getEntry(rootSrc) {
+  let map = {}
+  glob.sync(rootSrc + '/pages/**/main.js').forEach((file) => {
+    let key = relative(rootSrc, file).replace('.js', '')
+    map[key] = file
+  })
+  return map
 }
 
 const appEntry = { app: resolve('./src/main.js') }
@@ -103,5 +103,26 @@ module.exports = {
       }
     ]
   },
-  plugins: [new MpvuePlugin()]
+  plugins: [
+    new MpvuePlugin(),
+    new CopyWebpackPlugin(
+      [
+        {
+          from: '**/*.json',
+          to: ''
+        }
+      ],
+      {
+        context: 'src/'
+      }
+    ),
+    new CopyWebpackPlugin([
+      // 处理 main.json 里面引用的图片，不要放代码中引用的图片
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: path.resolve(__dirname, '../dist/static'),
+        ignore: ['.*']
+      }
+    ])
+  ]
 }

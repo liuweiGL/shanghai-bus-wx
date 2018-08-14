@@ -24,21 +24,20 @@
     </view>
     <view class="bus-stop__empty"
           v-else>
-      <view class="bus-stop__empty-icon bus-icon bus-naozhong" />
+      <bus-icon name=" bus-naozhong"
+                extra-class="bus-stop__empty-icon" />
       <text class="bus-stop__empty-text">等待发车</text>
     </view>
   </view>
 </template>
 
 <script>
-import BusCount from '@/components/count'
-import BusLoading from '@/components/loading'
+import BusCount from './count'
 import { getStopInfo } from '@/apis/routerDetail'
 export default {
   name: 'BusStop',
   components: {
-    BusCount,
-    BusLoading
+    BusCount
   },
   created() {
     this.queryStopInfo()
@@ -105,9 +104,7 @@ export default {
     }
   }
   @include e(extra-info) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+   @include extend-rule(center-row)
   }
   @include e(distance) {
     margin-left: 5px;
@@ -121,16 +118,15 @@ export default {
     height: 48px;
   }
   @include e(empty) {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    color: $--color-disable;
+   @include extend-rule(bottom-row);
   }
   @include e(empty-icon) {
+    color: $--color-disable;
     font-size: $--font-size-h2;
   }
   @include e(empty-text) {
     margin-left: 5px;
+    color: $--color-disable;
   }
 }
 </style>

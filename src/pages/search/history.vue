@@ -1,31 +1,28 @@
 <template>
   <view class="bus-search-history">
-    <scroll-view class="bus-search-scroll"
-                 scroll-y>
-      <view class="bus-search-history__hd">
-        <text class="bus-search-history__title">搜索历史：</text>
-        <button size="mini"
-                class="bus-search-history__btn"
-                hover-class="is-hover"
-                plain
-                @click="clearHistoryHandler">清除</button>
-      </view>
-      <bus-router-list :data="data" />
-    </scroll-view>
+    <bus-list :data="data"
+              @item-click="itemClickHandler">
+      <template slot="title">
+        <view class="bus-search-history__hd">
+          <text class="bus-search-history__title">搜索历史：</text>
+          <button size="mini"
+                  class="bus-search-history__btn"
+                  hover-class="is-hover"
+                  plain
+                  @click="clearHistoryHandler">清除</button>
+        </view>
+      </template>
+    </bus-list>
   </view>
 </template>
 <script>
 import Store from '@/js/store'
 import { throttle } from '@/js/utils'
-import BusRouterList from '@/components/routerList/index'
 
 const localKey = 'bus_search_history'
 
 export default {
   name: 'BusComponentSearchHistory',
-  components: {
-    BusRouterList
-  },
   onLoad() {
     Store.get(localKey).then((data) => {
       this.data = data
@@ -58,7 +55,10 @@ export default {
     clearHistoryHandler: throttle(function() {
       this.data = null
       Store.remove(localKey)
-    }, 2000)
+    }, 2000),
+    itemClickHandler(item) {
+      this.$emit('item-click', item)
+    }
   },
   props: {
     searchValue: {
@@ -71,18 +71,11 @@ export default {
 
 <style lang="scss">
 @include b(search-history) {
-  flex: 1;
-  overflow: hidden;
-  @include e(scroll) {
-    height: 100%;
-  }
+  height: 100%;
   @include e(hd) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 0;
     color: $--color-title;
     background: $--color-background;
+    @include extend-rule(between-row);
   }
   @include e(title) {
     padding-left: 10px;
@@ -91,7 +84,10 @@ export default {
   @include e(btn) {
     &[plain] {
       margin: 0;
+      line-height: 1;
+      padding: $--padding;
       color: $--color-primary;
+      font-size: $--font-size-base;
       border: none;
       border-radius: 0;
       @include when(hover) {

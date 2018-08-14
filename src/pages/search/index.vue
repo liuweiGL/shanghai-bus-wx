@@ -22,8 +22,10 @@
     </view>
     <view class="bus-search__bd">
       <bus-auto-complete v-model="searchText"
+                         @item-click="itemClickHandler"
                          v-if="searchText" />
-      <bus-search-history :search-value="searchValue" />
+      <bus-search-history :search-value="searchValue"
+                          @item-click="itemClickHandler" />
     </view>
   </view>
 </template>
@@ -66,6 +68,10 @@ export default {
     clearHandler() {
       this.searchText = null
     },
+    itemClickHandler(item) {
+      this.searchText = item
+      this.searchHandler()
+    },
     searchHandler() {
       const { searchText } = this
       this.searchValue = searchText
@@ -79,9 +85,8 @@ export default {
 
 <style lang="scss">
 @include b(search) {
-  display: flex;
-  flex-flow: column nowrap;
   height: 100%;
+  @include extend-rule(col);
   @include e(hd) {
     flex: none;
     padding: 20px 10px;
