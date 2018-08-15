@@ -13,6 +13,7 @@
           <view class="bus-list__item"
                 v-for="(item, index) in data"
                 :key="index"
+                style="border-width:.5px;"
                 @click="clickHandler(item,index)">{{ item }}</view>
         </slot>
       </view>
