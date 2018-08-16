@@ -2,7 +2,7 @@
   <view class="bus-search">
     <view class="bus-search__hd">
       <input class="bus-search__input"
-             type="number"
+             type="text"
              placeholder="搜索"
              placeholder-class="bus-search__placeholder"
              v-model="searchText"
@@ -21,9 +21,9 @@
             v-if="!!searchText" />
     </view>
     <view class="bus-search__bd">
-      <bus-auto-complete v-model="searchText"
-                         @item-click="itemClickHandler"
-                         v-if="searchText" />
+      <bus-search-auto-complete v-model="searchText"
+                                @item-click="itemClickHandler"
+                                v-if="searchText" />
       <bus-search-history :search-value="searchValue"
                           @item-click="itemClickHandler" />
     </view>
@@ -32,7 +32,7 @@
 
 <script>
 import BusSearchHistory from './history'
-import BusAutoComplete from './autoComplete'
+import BusSearchAutoComplete from './autoComplete'
 
 const createData = function() {
   return {
@@ -44,15 +44,15 @@ const createData = function() {
 export default {
   name: 'BusComponentSearch',
   components: {
-    BusAutoComplete,
-    BusSearchHistory
+    BusSearchHistory,
+    BusSearchAutoComplete
   },
   onHide() {
     /**
      * 详情页返回搜索页触发
-     * 传递数据到`历史记录`模块
+     * 清空搜索
      */
-    this.searchValue = this.searchText
+    this.searchText = null
   },
   onUnload() {
     /**

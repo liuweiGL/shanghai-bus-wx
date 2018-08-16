@@ -1,7 +1,6 @@
 <template>
   <view class="bus-search-history">
-    <bus-list :data="data"
-              @item-click="itemClickHandler">
+    <bus-list :data="data">
       <template slot="title">
         <view class="bus-search-history__hd">
           <text class="bus-search-history__title">搜索历史：</text>
@@ -10,6 +9,16 @@
                   hover-class="is-hover"
                   plain
                   @click="clearHistoryHandler">清除</button>
+        </view>
+      </template>
+      <template slot="list">
+        <view class="bus-search-history__item"
+              v-for="item in data"
+              :key="item"
+              @click="itemClickHandler(item)">
+          <bus-icon name="bus-time-circle"
+                    extra-class="bus-search-history__icon" />
+          <view class="bus-search-history__text">{{ item }}</view>
         </view>
       </template>
     </bus-list>
@@ -94,6 +103,16 @@ export default {
         color: $--color-primary-light;
       }
     }
+  }
+  @include e(item) {
+    @include extend-rule(middle-row);
+    @include extend-rule(list-item);
+  }
+  @include e(icon) {
+    color: $--color-text-light;
+  }
+  @include e(text) {
+    margin-left: 5px;
   }
 }
 </style>

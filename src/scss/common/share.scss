@@ -18,7 +18,7 @@
   justify-content: space-around;
   @include extend-rule(middle-row);
 }
-@include share-rule(bottom-row){
+@include share-rule(bottom-row) {
   align-items: flex-end;
   @include extend-rule(center-row);
 }
@@ -29,12 +29,13 @@
 }
 @include share-rule(center-col) {
   justify-content: center;
+  @include extend-rule(col);
 }
 @include share-rule(middle-col) {
   align-items: center;
   @include extend-rule(center-col);
 }
-@include share-rule(bottom-col){
+@include share-rule(bottom-col) {
   align-items: flex-end;
   @include extend-rule(center-col);
 }

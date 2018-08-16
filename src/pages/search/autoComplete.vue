@@ -1,7 +1,18 @@
 <template>
-  <view class="bus-auto-complete">
-    <bus-list :data="list"
-              @item-click="itemclickHandler" />
+  <view class="bus-search-auto-complete">
+    <bus-list :data="data">
+      <template slot="list">
+        <view class="bus-search-auto-complete__item"
+              v-for="item in data"
+              :key="item"
+              @click="itemClickHandler(item)">
+          <icon type="search"
+                size="14"
+                color="rgba(0, 0, 0, .45)" />
+          <view class="bus-search-auto-complete__text">{{ item }}</view>
+        </view>
+      </template>
+    </bus-list>
   </view>
 </template>
 <script>
@@ -15,10 +26,10 @@ routers.sort((a, b) => {
 })
 
 export default {
-  name: 'BusAutoComplete',
+  name: 'BusSearchAutoComplete',
   data() {
     return {
-      list: null
+      data: null
     }
   },
   watch: {
@@ -28,11 +39,12 @@ export default {
     }
   },
   methods: {
-    itemclickHandler(item) {
+    itemClickHandler(item) {
+      console.log(item)
       this.$emit('item-click', item)
     },
     filterRoutersHandler: debounce(function(searchText) {
-      this.list = routers
+      this.data = routers
         .filter((item) => item.indexOf(searchText) > -1)
         .slice(0, 10)
     }, 300)
@@ -46,7 +58,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@include b(auto-complete) {
+@include b(search-auto-complete) {
   position: absolute;
   top: 0;
   left: 0;
@@ -54,5 +66,13 @@ export default {
   width: 100%;
   height: 100%;
   background: $--color-white;
+  @include e(item) {
+    @include extend-rule(middle-row);
+    @include extend-rule(list-item);
+    padding: 15px 20px;
+  }
+  @include e(text) {
+    margin-left: 5px;
+  }
 }
 </style>
