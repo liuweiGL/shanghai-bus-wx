@@ -130,7 +130,7 @@
 }
 
 @mixin pseudo($pseudo) {
-  @at-root #{&}#{':#{$pseudo}'} {
+  @at-root #{&}#{'::#{$pseudo}'} {
     @content;
   }
 }
