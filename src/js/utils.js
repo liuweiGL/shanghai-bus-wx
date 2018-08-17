@@ -127,16 +127,26 @@ export function throttle(fn, delay = 0) {
  */
 export function debounce(fn, delay = 50) {
   let timer
+  let callArgs
+  let callContext
+  let lastCallTime
+
+  const callFn = function() {
+    fn.apply(callContext, callArgs)
+  }
   return function() {
-    let result
-    const self = this
-    const callArgs =
-    arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
-    clearTimeout(timer)
-    timer = setTimeout(function() {
-      result = fn.apply(self, callArgs)
-    }, delay)
-    return result
+    callContext = this
+    callArgs =
+      arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
+    const now = Date.now()
+    if (!lastCallTime || now - lastCallTime >= delay) {
+      callFn()
+    } else {
+      const waitTime = delay - (now - lastCallTime)
+      clearTimeout(timer)
+      timer = setTimeout(callFn, waitTime)
+    }
+    lastCallTime = now
   }
 }
 

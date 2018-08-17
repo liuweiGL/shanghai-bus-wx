@@ -25,8 +25,8 @@
             <view class="bus-router-detail__station">
               <text class="bus-router-detail__label">{{ item }}</text>
               <bus-icon name="bus-star"
-                        extra-class="bus-router-detail__icon"
-                        @click="collectionHandler(index)" />
+                        :extra-class="getIconClass(item)"
+                        @click="toggleCollectionHandler(item,index)" />
             </view>
             <bus-stop :station="station"
                       v-if="currentIndex === index" />
@@ -47,7 +47,10 @@
 </template>
 <script>
 import BusStop from './stop'
+import Store from '@/js/store'
+import { debounce } from '@/js/utils'
 import { getBusByRouter } from '@/apis/routerDetail'
+import { COLLECTION_LOCAL_KEY } from '@/js/constants'
 
 const createData = function() {
   return {
@@ -57,7 +60,8 @@ const createData = function() {
     station: null,
     isError: false,
     isEmpty: false,
-    currentIndex: null
+    currentIndex: null,
+    collectionData: {}
   }
 }
 export default {
@@ -66,11 +70,13 @@ export default {
     BusStop
   },
   onLoad() {
-    // 重置数据源
-    this.getRouterDetail()
+    // 获取详情数据
+    this.getRouterDetail().then(this.markStation)
   },
   onUnload() {
+    // 重置数据源
     this.$setData(createData())
+    // 取消未完成的请求
     this.request && this.request.abort()
   },
   data() {
@@ -101,6 +107,7 @@ export default {
         .always(() => {
           wx.hideLoading()
         })
+      return this.request
     },
     // 查询到站信息
     searchStopHandler(index) {
@@ -129,10 +136,70 @@ export default {
         name: name.replace(/(?:(\()(.*?)(--)(.*)(\)))/, '$1$4$3$2$5')
       }
     },
-    // 收藏
-    collectionHandler(index) {
-      // 公交名称，站台下标
-      console.log(index)
+    // 标识已收藏的站台
+    markStation() {
+      ~!this.isEmpty &&
+        Store.get(COLLECTION_LOCAL_KEY).then((data) => {
+          this.collectionData = data || {}
+        })
+    },
+    // 添加样式
+    getIconClass(item) {
+      const routerData = this.collectionData[this.data.sid]
+      if (routerData) {
+        return (
+          'bus-router-detail__icon ' +
+          (routerData.stations.includes(item)
+            ? 'bus-star-fill is-collection'
+            : '')
+        )
+      }
+      return 'bus-router-detail__icon'
+    },
+    // 收藏 || 移除
+    toggleCollectionHandler: debounce(function(item, index) {
+      const {
+        direction,
+        collectionData,
+        data: { sid, name, startTime, endTime, price }
+      } = this
+      let routerData = collectionData[sid]
+      if (!routerData) {
+        routerData = {
+          sid,
+          name,
+          index,
+          price,
+          endTime,
+          startTime,
+          direction,
+          stations: [item]
+        }
+        this.$set(collectionData, sid, routerData)
+      } else {
+        const { stations } = routerData
+        if (stations.includes(item)) {
+          // 取消收藏
+          stations.splice(stations.indexOf(item), 1)
+          if (!stations.length) {
+            // 该路线没有收藏的站台，清空路线数据
+            delete collectionData[sid]
+          }
+        } else {
+          // 加入收藏
+          stations.push(item)
+          stations.sort(this.compare)
+        }
+      }
+      // 更新缓存
+      Store.set(COLLECTION_LOCAL_KEY, collectionData)
+    }, 300),
+    // 排序
+    compare(a, b) {
+      const {
+        data: { stations }
+      } = this
+      return stations.indexOf(a) - stations.indexOf(b)
     },
     // 查询信息为空，返回
     gobackHandler() {
@@ -203,6 +270,9 @@ export default {
     padding: 15px 10px;
     color: $--color-text-light;
     font-size: $--font-size-h4;
+    @include when(collection) {
+      color: $--color-danger;
+    }
   }
 }
 </style>

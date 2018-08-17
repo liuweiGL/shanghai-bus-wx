@@ -21,18 +21,18 @@
             v-if="!!searchText" />
     </view>
     <view class="bus-search__bd">
-      <bus-search-auto-complete v-model="searchText"
-                                @item-click="itemClickHandler"
-                                v-if="searchText" />
-      <bus-search-history :search-value="searchValue"
-                          @item-click="itemClickHandler" />
+      <bus-autocomplete v-model="searchText"
+                        @item-click="itemClickHandler"
+                        v-if="searchText" />
+      <bus-history :search-value="searchValue"
+                   @item-click="itemClickHandler" />
     </view>
   </view>
 </template>
 
 <script>
-import BusSearchHistory from './history'
-import BusSearchAutoComplete from './autoComplete'
+import BusHistory from './history'
+import BusAutocomplete from './autocomplete'
 
 const createData = function() {
   return {
@@ -42,10 +42,10 @@ const createData = function() {
 }
 
 export default {
-  name: 'BusComponentSearch',
+  name: 'BusSearch',
   components: {
-    BusSearchHistory,
-    BusSearchAutoComplete
+    BusHistory,
+    BusAutocomplete
   },
   onHide() {
     /**

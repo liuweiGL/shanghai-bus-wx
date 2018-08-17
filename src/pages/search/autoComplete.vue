@@ -1,15 +1,15 @@
 <template>
-  <view class="bus-search-auto-complete">
+  <view class="bus-autocomplete">
     <bus-list :data="data">
       <template slot="list">
-        <view class="bus-search-auto-complete__item"
+        <view class="bus-autocomplete__item"
               v-for="item in data"
               :key="item"
               @click="itemClickHandler(item)">
           <icon type="search"
                 size="14"
                 color="rgba(0, 0, 0, .45)" />
-          <view class="bus-search-auto-complete__text">{{ item }}</view>
+          <view class="bus-autocomplete__text">{{ item }}</view>
         </view>
       </template>
     </bus-list>
@@ -26,7 +26,7 @@ routers.sort((a, b) => {
 })
 
 export default {
-  name: 'BusSearchAutoComplete',
+  name: 'BusAutocomplete',
   data() {
     return {
       data: null
@@ -58,7 +58,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@include b(search-auto-complete) {
+@include b(autocomplete) {
   position: absolute;
   top: 0;
   left: 0;

@@ -57,21 +57,10 @@
     $length: length($--padding);
     content: '';
     position: absolute;
-    top: 0;
-    @if ($length == 1) {
-      right: nth($--padding, 0);
-      left: nth($--padding, 0);
-    } @else if($length == 2) {
-      right: nth($--padding, 1);
-      left: nth($--padding, 1);
-    } @else if($length == 3) {
-      right: nth($--padding, 1);
-      left: nth($--padding, 1);
-    } @else if($length == 4) {
-      right: nth($--padding, 1);
-      left: nth($--padding, 3);
-    }
+    bottom: 0;
+    left: 0;
     height: 0;
+    width: 100%;
     border-top: 1px solid $--color-border;
     transform: scaleY(0.5);
     transform-origin: 0 0;

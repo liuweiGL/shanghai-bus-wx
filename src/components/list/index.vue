@@ -13,7 +13,9 @@
           <view class="bus-list__item"
                 v-for="(item, index) in data"
                 :key="index"
-                @click="clickHandler(item,index)">{{ item }}</view>
+                @click="clickHandler(item,index)">
+            {{ item }}
+          </view>
         </slot>
       </scroll-view>
     </view>

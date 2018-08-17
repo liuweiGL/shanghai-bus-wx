@@ -1,24 +1,24 @@
 <template>
-  <view class="bus-search-history">
+  <view class="bus-history">
     <bus-list :data="data">
       <template slot="title">
-        <view class="bus-search-history__hd">
-          <text class="bus-search-history__title">搜索历史：</text>
+        <view class="bus-history__hd">
+          <text class="bus-history__title">搜索历史：</text>
           <button size="mini"
-                  class="bus-search-history__btn"
+                  class="bus-history__btn"
                   hover-class="is-hover"
                   plain
                   @click="clearHistoryHandler">清除</button>
         </view>
       </template>
       <template slot="list">
-        <view class="bus-search-history__item"
+        <view class="bus-history__item"
               v-for="item in data"
               :key="item"
               @click="itemClickHandler(item)">
           <bus-icon name="bus-time-circle"
-                    extra-class="bus-search-history__icon" />
-          <view class="bus-search-history__text">{{ item }}</view>
+                    extra-class="bus-history__icon" />
+          <view class="bus-history__text">{{ item }}</view>
         </view>
       </template>
     </bus-list>
@@ -27,19 +27,18 @@
 <script>
 import Store from '@/js/store'
 import { throttle } from '@/js/utils'
-
-const localKey = 'bus_search_history'
+import { SEARCH_HISTORY_LOCAL_KEY } from '@/js/constants'
 
 export default {
-  name: 'BusComponentSearchHistory',
+  name: 'BusHistory',
   onLoad() {
-    Store.get(localKey).then((data) => {
+    Store.get(SEARCH_HISTORY_LOCAL_KEY).then((data) => {
       this.data = data
     })
   },
   onUnload() {
     // 页面离开时，保存数据到本地
-    Store.set(localKey, this.data)
+    Store.set(SEARCH_HISTORY_LOCAL_KEY, this.data)
   },
   data() {
     return {
@@ -63,7 +62,7 @@ export default {
     },
     clearHistoryHandler: throttle(function() {
       this.data = null
-      Store.remove(localKey)
+      Store.remove(SEARCH_HISTORY_LOCAL_KEY)
     }, 2000),
     itemClickHandler(item) {
       this.$emit('item-click', item)
@@ -79,7 +78,7 @@ export default {
 </script>
 
 <style lang="scss">
-@include b(search-history) {
+@include b(history) {
   height: 100%;
   @include e(hd) {
     color: $--color-title;
