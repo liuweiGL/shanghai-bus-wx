@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { throttle } from '@/js/utils'
+import debounce from '@/js/debounce'
 import { getBusByLocation } from '@/apis/aroundRouter'
 
 // 失败原因
@@ -140,9 +140,15 @@ export default {
       console.log(error)
     },
     // 刷新
-    refreshHandler: throttle(function() {
-      this.getRouterNames()
-    }, 1000),
+    refreshHandler: debounce(
+      function() {
+        this.getRouterNames()
+      },
+      1000,
+      {
+        leading: true
+      }
+    ),
     // 选择 路线 => 详情页
     itemClickHandler(item) {
       wx.navigateTo({

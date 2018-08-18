@@ -74,7 +74,7 @@ export function urlMixin(url, params) {
 export function queryString(params) {
   let pairs = []
   for (let key in params) {
-    if (params.hasOwnProperty(key)) {
+    if (hasOwnProperty(params, key)) {
       let val = params[key]
       val =
         typeof val === 'object'
@@ -97,60 +97,6 @@ export function getValByPx(val) {
 }
 
 /**
- * 简单节流函数
- * @param {function} fn
- * @param {number} delay
- */
-export function throttle(fn, delay = 0) {
-  delay = Number(delay)
-  if (typeof fn !== 'function' || typeof delay !== 'number') {
-    throw new TypeError()
-  }
-  let lastCallTime = 0
-  return function() {
-    const now = Date.now()
-    // 对参数使用slice会阻止某些JavaScript引擎中的优化
-    // see detail: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments
-    if (now - lastCallTime > delay) {
-      const callArgs =
-        arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
-      lastCallTime = now
-      return fn.apply(this, callArgs)
-    }
-  }
-}
-
-/**
- * 简单节流函数
- * @param {function} fn
- * @param {number} delay
- */
-export function debounce(fn, delay = 50) {
-  let timer
-  let callArgs
-  let callContext
-  let lastCallTime
-
-  const callFn = function() {
-    fn.apply(callContext, callArgs)
-  }
-  return function() {
-    callContext = this
-    callArgs =
-      arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments)
-    const now = Date.now()
-    if (!lastCallTime || now - lastCallTime >= delay) {
-      callFn()
-    } else {
-      const waitTime = delay - (now - lastCallTime)
-      clearTimeout(timer)
-      timer = setTimeout(callFn, waitTime)
-    }
-    lastCallTime = now
-  }
-}
-
-/**
  * 左边填充 `0`
  * @param {string} str
  * @param {number} len
@@ -161,3 +107,78 @@ export function paddingLeftZero(str, len = 2) {
   }
   return str
 }
+
+/**
+ * 判断是否是函数
+ * @param {any} value
+ */
+export function isFunction(value) {
+  return typeof value === 'function'
+}
+/**
+ * 判断是否是数组
+ * @param {any} value
+ */
+export function isArray(value) {
+  return Array.isArray(value)
+}
+
+/**
+ * 判断是否是对象
+ * @param {any} value
+ */
+export function isObject(value) {
+  return (value !== null && typeof value === 'object') || isFunction(value)
+}
+
+/**
+ * 判断对象是否有 `key` 属性
+ * @param {object} value
+ * @param {string} key
+ */
+export function hasOwnProperty(value, key) {
+  return value.hasOwnProperty(key)
+}
+/**
+ * 判断是否为空
+ * 与 `_.isEmpty` 的区别是 `value` 为数字时，`_.isEmpty` 返回 `true`，这里返回 `false`
+ * @param {any} data
+ */
+export function isEmpty(value) {
+  if (!isObject(value)) {
+    return !value && value !== 0
+  }
+  if (isArray(value)) {
+    return !value.length
+  } else {
+    for (let key in value) {
+      if (hasOwnProperty(value, key)) {
+        return false
+      }
+    }
+  }
+  return true
+}
+
+/**
+ * 拷贝：不考虑 `正则`、`函数` 等业务中不常用的场景
+ * @param {any} value
+ * @param {boolean} deep
+ */
+export function clone(value, deep = true) {
+  if (!isObject(value)) {
+    return value
+  }
+  if (isArray(value)) {
+    return value.map((item) => clone(item, deep))
+  } else {
+    const tmp = {}
+    for (let key in value) {
+      if (hasOwnProperty(value, key)) {
+        tmp[key] = clone(value[key], deep)
+      }
+    }
+    return tmp
+  }
+}
+wx.clone = clone

@@ -11,9 +11,6 @@ export default {
       return (
         'bus-icon ' + this.name + (this.extraClass ? ' ' + this.extraClass : '')
       )
-    },
-    myHoverClass() {
-      return this.hoverClass
     }
   },
   methods: {

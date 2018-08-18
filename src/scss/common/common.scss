@@ -5,20 +5,4 @@ page {
     'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
-button[size='mini'] {
-  font-size: $--font-size-extra;
-}
 
-button[type='primary'] {
-  color: #ffffff;
-  background-color: $--color-primary;
-  &.button-hover {
-    background-color: $--color-primary-lighter;
-  }
-}
-
-button[type='primary'][plain] {
-  color: $--color-primary;
-  border: 1px solid $--color-primary;
-  background-color: transparent;
-}

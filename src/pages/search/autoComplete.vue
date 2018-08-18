@@ -17,7 +17,7 @@
 </template>
 <script>
 import routers from '@/js/routers'
-import { debounce } from '@/js/utils'
+import debounce from '@/js/debounce'
 
 // 把路线名称短的排前面，文字按 `unicode` 排序
 routers.sort((a, b) => {

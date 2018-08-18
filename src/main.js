@@ -8,11 +8,13 @@ import './scss/index.scss'
 import BusIcon from './components/icon'
 import BusList from './components/list'
 import BusAlert from './components/alert'
+import BusButton from './components/button'
 import BusLoading from './components/loading'
 
 Vue.component('bus-icon', BusIcon)
 Vue.component('bus-list', BusList)
 Vue.component('bus-alert', BusAlert)
+Vue.component('bus-button', BusButton)
 Vue.component('bus-loading', BusLoading)
 
 Vue.config.productionTip = false

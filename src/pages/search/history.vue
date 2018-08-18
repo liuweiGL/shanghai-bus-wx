@@ -26,7 +26,7 @@
 </template>
 <script>
 import Store from '@/js/store'
-import { throttle } from '@/js/utils'
+import debounce from '@/js/debounce'
 import { SEARCH_HISTORY_LOCAL_KEY } from '@/js/constants'
 
 export default {
@@ -60,10 +60,18 @@ export default {
         data.push(searchValue)
       }
     },
-    clearHistoryHandler: throttle(function() {
-      this.data = null
-      Store.remove(SEARCH_HISTORY_LOCAL_KEY)
-    }, 2000),
+    clearHistoryHandler: debounce(
+      function() {
+        if (this.data) {
+          this.data = null
+          Store.remove(SEARCH_HISTORY_LOCAL_KEY)
+        }
+      },
+      1000,
+      {
+        leading: true
+      }
+    ),
     itemClickHandler(item) {
       this.$emit('item-click', item)
     }

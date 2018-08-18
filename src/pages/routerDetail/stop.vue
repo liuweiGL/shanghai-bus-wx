@@ -1,32 +1,37 @@
 <template>
-  <view class="bus-stop">
-    <bus-loading v-if="loading" />
+  <view :class="clazz">
     <scroll-view scroll-x
-                 v-else-if="data">
-      <view class="bus-stop__card"
-            v-for="(item,index) in data"
-            :key="index">
+                 v-if="data">
+      <view class="bus-stop__card">
         <bus-count :format="format"
-                   :time="item.time" />
+                   :time="data[0]['time']" />
+        <view class="bus-stop__title"
+              v-if="title">{{ title }}</view>
         <view class="bus-stop__extra-info">
-          <view class="bus-stop__station-num">剩余{{ item.stationSum }}站</view>
-          <view class="bus-stop__distance">约{{ item.distance }}米</view>
+          <view class="bus-stop__station-num">剩余{{ data[0]['stationSum'] }}站</view>
+          <view class="bus-stop__distance">约{{ data[0]['distance'] }}米</view>
         </view>
-        <view class="bus-stop__plate-number">车牌：{{ item.plateNumber }}</view>
+        <view class="bus-stop__plate-number">车牌：{{ data[0]['plateNumber'] }}</view>
       </view>
     </scroll-view>
-    <view class="bus-stop__reload"
-          v-else-if="isError">
-      <button type="primary"
-              size="mini"
-              plain
-              @click.stop="queryStopInfo">重新查询</button>
-    </view>
-    <view class="bus-stop__empty"
+    <view class="bus-stop__card bus-stop__card--transparent"
           v-else>
-      <bus-icon name=" bus-naozhong"
-                extra-class="bus-stop__empty-icon" />
-      <text class="bus-stop__empty-text">等待发车</text>
+      <bus-loading v-if="loading" />
+      <view class="bus-stop__reload"
+            v-else-if="isError">
+        <button type="primary"
+                size="mini"
+                plain
+                @click.stop="queryStopInfo">重新查询</button>
+      </view>
+      <view class="bus-stop__empty"
+            v-else>
+        <bus-icon name="bus-naozhong"
+                  extra-class="bus-stop__empty-icon" />
+        <text class="bus-stop__empty-text">等待发车</text>
+      </view>
+      <view class="bus-stop__title"
+            v-if="title">{{ title }}</view>
     </view>
   </view>
 </template>
@@ -51,6 +56,11 @@ export default {
       request: null,
       loading: false,
       isError: false
+    }
+  },
+  computed: {
+    clazz() {
+      return 'bus-stop ' + this.extraClass
     }
   },
   methods: {
@@ -80,6 +90,14 @@ export default {
       // 要查询的站台
       type: Object,
       default: null
+    },
+    title: {
+      type: String,
+      default: null
+    },
+    extraClass: {
+      type: String,
+      default: ''
     }
   }
 }
@@ -88,23 +106,25 @@ export default {
 <style lang="scss">
 @include b(stop) {
   position: relative;
-  padding-bottom: 15px;
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
   @include e(card) {
     display: inline-block;
-    padding: 10px;
+    padding: 10px 20px;
+    border-radius: 4px;
     color: $--color-text-light;
     font-size: $--font-size-desc;
     background: $--color-white;
-    border-radius: 4px;
-    & + .bus-stop__card {
-      margin-left: 10px;
+    @include m(transparent) {
+      background: transparent;
     }
   }
+  @include e(title) {
+    color: $--color-title;
+  }
   @include e(extra-info) {
-   @include extend-rule(center-row)
+    @include extend-rule(center-row);
   }
   @include e(distance) {
     margin-left: 5px;
@@ -118,7 +138,7 @@ export default {
     height: 48px;
   }
   @include e(empty) {
-   @include extend-rule(bottom-row);
+    @include extend-rule(bottom-row);
   }
   @include e(empty-icon) {
     color: $--color-disable;

@@ -3,8 +3,7 @@
     "pages/index/main",
     "pages/search/main",
     "pages/routerDetail/main",
-    "pages/collection/main",
-    "pages/user/main"
+    "pages/collection/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -29,13 +28,7 @@
         "text": "收藏",
         "pagePath": "pages/collection/main",
         "iconPath": "static/images/star.png",
-        "selectedIconPath": "static/images/star_active.png"
-      },
-      {
-        "text": "我的",
-        "pagePath": "pages/user/main",
-        "iconPath": "static/images/user.png",
-        "selectedIconPath": "static/images/user_active.png"
+        "selectedIconPath": "static/images/star-fill.png"
       }
     ]
   }

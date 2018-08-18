@@ -15,7 +15,7 @@
   </view>
 </template>
 <script>
-import { throttle } from '@/js/utils'
+import throttle from '@/js/throttle'
 export default {
   name: 'BusAlert',
   methods: {

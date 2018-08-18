@@ -29,6 +29,7 @@
                         @click="toggleCollectionHandler(item,index)" />
             </view>
             <bus-stop :station="station"
+                      extra-class="bus-router-detail__stop"
                       v-if="currentIndex === index" />
           </view>
         </scroll-view>
@@ -48,7 +49,7 @@
 <script>
 import BusStop from './stop'
 import Store from '@/js/store'
-import { debounce } from '@/js/utils'
+import debounce from '@/js/debounce'
 import { getBusByRouter } from '@/apis/routerDetail'
 import { COLLECTION_LOCAL_KEY } from '@/js/constants'
 
@@ -147,59 +148,76 @@ export default {
     getIconClass(item) {
       const routerData = this.collectionData[this.data.sid]
       if (routerData) {
+        const find = (station) => station.name === item
         return (
           'bus-router-detail__icon ' +
-          (routerData.stations.includes(item)
-            ? 'bus-star-fill is-collection'
-            : '')
+          (routerData.stations.some(find) ? 'bus-star-fill is-collection' : '')
         )
       }
       return 'bus-router-detail__icon'
     },
     // 收藏 || 移除
-    toggleCollectionHandler: debounce(function(item, index) {
-      const {
-        direction,
-        collectionData,
-        data: { sid, name, startTime, endTime, price }
-      } = this
-      let routerData = collectionData[sid]
-      if (!routerData) {
-        routerData = {
-          sid,
-          name,
-          index,
-          price,
-          endTime,
-          startTime,
-          direction,
-          stations: [item]
-        }
-        this.$set(collectionData, sid, routerData)
-      } else {
-        const { stations } = routerData
-        if (stations.includes(item)) {
-          // 取消收藏
-          stations.splice(stations.indexOf(item), 1)
-          if (!stations.length) {
-            // 该路线没有收藏的站台，清空路线数据
-            delete collectionData[sid]
+    toggleCollectionHandler: debounce(
+      function(item, index) {
+        try {
+          const {
+            direction,
+            collectionData,
+            data: { sid, name, startTime, endTime, price }
+          } = this
+          let routerData = collectionData[sid]
+          if (!routerData) {
+            routerData = {
+              sid,
+              name,
+              price,
+              endTime,
+              startTime,
+              direction,
+              stations: [
+                {
+                  index,
+                  name: item
+                }
+              ]
+            }
+            this.$set(collectionData, sid, routerData)
+          } else {
+            const { stations } = routerData
+            const find = (station) => station.name === item
+            if (stations.some(find)) {
+              // 取消收藏
+              stations.splice(stations.findIndex(find), 1)
+              if (!stations.length) {
+                // 该路线没有收藏的站台，清空路线数据
+                delete collectionData[sid]
+              }
+            } else {
+              // 加入收藏
+              stations.push({
+                index,
+                name: item
+              })
+              stations.sort(this.compare)
+            }
           }
-        } else {
-          // 加入收藏
-          stations.push(item)
-          stations.sort(this.compare)
+          // 更新缓存
+          Store.set(COLLECTION_LOCAL_KEY, collectionData)
+        } catch (e) {
+          console.log(e)
         }
+      },
+      300,
+      {
+        leading: true
       }
-      // 更新缓存
-      Store.set(COLLECTION_LOCAL_KEY, collectionData)
-    }, 300),
+    ),
     // 排序
     compare(a, b) {
       const {
         data: { stations }
       } = this
-      return stations.indexOf(a) - stations.indexOf(b)
+      return stations.indexOf(a.name) - stations.indexOf(b.name)
     },
     // 查询信息为空，返回
     gobackHandler() {
@@ -259,6 +277,9 @@ export default {
       background: $--color-table-header;
     }
     padding: 0;
+  }
+  @include e(stop) {
+    padding-bottom: 15px;
   }
   @include e(station) {
     @include extend-rule(between-row);
