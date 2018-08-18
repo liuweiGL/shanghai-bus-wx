@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/search/main",
+    "pages/routerDetail/main",
+    "pages/collection/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarTextStyle": "#fff",
+    "navigationBarTitleText": "魔都公交",
+    "navigationBarBackgroundColor": "#2f54eb"
+  },
+  "tabBar": {
+    "position": "bottom",
+    "borderStyle": "black",
+    "backgroundColor": "#fff",
+    "selectedColor": "#2f54eb",
+    "color": "#333",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/main",
+        "iconPath": "static/images/home.png",
+        "selectedIconPath": "static/images/home-fill.png"
+      },
+      {
+        "text": "收藏",
+        "pagePath": "pages/collection/main",
+        "iconPath": "static/images/star.png",
+        "selectedIconPath": "static/images/star-fill.png"
+      }
+    ]
+  }
+}

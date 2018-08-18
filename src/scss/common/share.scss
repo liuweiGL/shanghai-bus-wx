@@ -1,0 +1,67 @@
+@include share-rule(row) {
+  display: flex;
+  flex-flow: row nowrap;
+}
+@include share-rule(middle-row) {
+  align-items: center;
+  @include extend-rule(row);
+}
+@include share-rule(center-row) {
+  justify-content: center;
+  @include extend-rule(middle-row);
+}
+@include share-rule(between-row) {
+  justify-content: space-between;
+  @include extend-rule(middle-row);
+}
+@include share-rule(around-row) {
+  justify-content: space-around;
+  @include extend-rule(middle-row);
+}
+@include share-rule(bottom-row) {
+  align-items: flex-end;
+  @include extend-rule(center-row);
+}
+
+@include share-rule(col) {
+  display: flex;
+  flex-flow: column nowrap;
+}
+@include share-rule(center-col) {
+  justify-content: center;
+  @include extend-rule(col);
+}
+@include share-rule(middle-col) {
+  align-items: center;
+  @include extend-rule(center-col);
+}
+@include share-rule(bottom-col) {
+  align-items: flex-end;
+  @include extend-rule(center-col);
+}
+
+@include share-rule(list-item) {
+  position: relative;
+  padding: $--padding;
+  color: $--color-text;
+  font-size: $--font-size-extra;
+  @include when(hover) {
+    background: $--color-table-header;
+  }
+  @include pseudo(before) {
+    $length: length($--padding);
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    width: 100%;
+    border-top: 1px solid $--color-border;
+    transform: scaleY(0.5);
+    transform-origin: 0 0;
+  }
+}
+
+@include share-rule(spinning){
+  animation: spinning 1.5s linear infinite;
+}

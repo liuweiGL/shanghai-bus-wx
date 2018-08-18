@@ -1,0 +1,66 @@
+/*
+   Font
+   -------------------------- */
+
+$--font-size-desc: 11px; // 装饰性字体大小
+$--font-size-extra: 13px; // 次要内容字体大小
+$--font-size-base: 14px; // 默认字体大小
+$--font-size-h4: 17px; // 区别于基础内容模块的字体大小
+$--font-size-h3: 18px; // 主要用于大按钮，实在不好命名...
+$--font-size-h2: 20px; // 页面大标题
+$--font-size-h1: 40px; // 主要用于 数字、时间
+
+/*
+   Color
+   -------------------------- */
+
+$--color-white: #fff;
+$--color-black: #000;
+
+$--color-title: rgba(0, 0, 0, 0.85);
+$--color-text: rgba(0, 0, 0, 0.65);
+$--color-text-light: rgba(0, 0, 0, 0.45);
+$--color-disable: rgba(0, 0, 0, 0.25);
+$--color-border: rgba(0, 0, 0, 0.15);
+$--color-divider: rgba(0, 0, 0, 0.09);
+$--color-background: rgba(0, 0, 0, 0.04);
+$--color-table-header: rgba(0, 0, 0, 0.02);
+
+$--color-title-reverse: rgba(255, 255, 255, 1);
+$--color-text-reverse: rgba(255, 255, 255, 0.85);
+$--color-text-light-reverse: rgba(255, 255, 255, 0.65);
+$--color-disable-reverse: rgba(255, 255, 255, 0.45);
+$--color-border-reverse: rgba(255, 255, 255, 0.25);
+$--color-divider-reverse: rgba(255, 255, 255, 0.15);
+$--color-background-reverse: rgba(255, 255, 255, 0.09);
+$--color-table-header-reverse: rgba(255, 255, 255, 0.04);
+
+$--color-primary: #2f54eb; // 主色调
+$--color-primary-light: #597ef7;
+$--color-primary-lighter: #85a5ff;
+$--color-primary-dark: #1d39c4;
+$--color-primary-darker: #10239e;
+
+$--color-success: #09bb07; // 完成状态颜色
+$--color-success-light: #30c728;
+$--color-success-lighter: #57d44c;
+$--color-success-dark: #009402;
+$--color-success-darker: #006e05;
+
+$--color-danger: #e64340; // 错误颜色
+$--color-danger-light: #f2716b;
+$--color-danger-lighter: #ffa299;
+$--color-danger-dark: #bf2c2e;
+$--color-danger-darker: #991c22;
+
+/*
+   zIndex
+   -------------------------- */
+
+$--z-index-top: 999;
+
+/*
+   Padding
+   -------------------------- */
+
+$--padding: 15px 10px;

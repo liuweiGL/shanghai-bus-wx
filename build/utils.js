@@ -1,18 +1,19 @@
-var path = require('path')
-var config = require('../config')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+let path = require('path')
+let config = require('../config')
+let ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-exports.assetsPath = function (_path) {
-  var assetsSubDirectory = process.env.NODE_ENV === 'production'
-    ? config.build.assetsSubDirectory
-    : config.dev.assetsSubDirectory
+exports.assetsPath = function(_path) {
+  let assetsSubDirectory =
+    process.env.NODE_ENV === 'production'
+      ? config.build.assetsSubDirectory
+      : config.dev.assetsSubDirectory
   return path.posix.join(assetsSubDirectory, _path)
 }
 
-exports.cssLoaders = function (options) {
+exports.cssLoaders = function(options) {
   options = options || {}
 
-  var cssLoader = {
+  let cssLoader = {
     loader: 'css-loader',
     options: {
       minimize: process.env.NODE_ENV === 'production',
@@ -20,14 +21,14 @@ exports.cssLoaders = function (options) {
     }
   }
 
-  var postcssLoader = {
+  let postcssLoader = {
     loader: 'postcss-loader',
     options: {
       sourceMap: true
     }
   }
 
-  var px2rpxLoader = {
+  let px2rpxLoader = {
     loader: 'px2rpx-loader',
     options: {
       baseDpr: 1,
@@ -35,9 +36,17 @@ exports.cssLoaders = function (options) {
     }
   }
 
+  // 导入全局scss
+  let sassResourceLoader = {
+    loader: 'sass-resources-loader',
+    options: {
+      resources: [path.resolve(__dirname, '../src/scss/global.scss')]
+    }
+  }
+
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
-    var loaders = [cssLoader, px2rpxLoader, postcssLoader]
+  function generateLoaders(loader, loaderOptions, anotherLoader) {
+    let loaders = [cssLoader, px2rpxLoader, postcssLoader]
     if (loader) {
       loaders.push({
         loader: loader + '-loader',
@@ -45,6 +54,10 @@ exports.cssLoaders = function (options) {
           sourceMap: options.sourceMap
         })
       })
+    }
+
+    if (anotherLoader) {
+      loaders.push(anotherLoader)
     }
 
     // Extract CSS when that option is specified
@@ -65,19 +78,19 @@ exports.cssLoaders = function (options) {
     wxss: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
+    sass: generateLoaders('sass', { indentedSyntax: true }, sassResourceLoader),
+    scss: generateLoaders('sass', {}, sassResourceLoader),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
   }
 }
 
 // Generate loaders for standalone style files (outside of .vue)
-exports.styleLoaders = function (options) {
-  var output = []
-  var loaders = exports.cssLoaders(options)
-  for (var extension in loaders) {
-    var loader = loaders[extension]
+exports.styleLoaders = function(options) {
+  let output = []
+  let loaders = exports.cssLoaders(options)
+  for (let extension in loaders) {
+    let loader = loaders[extension]
     output.push({
       test: new RegExp('\\.' + extension + '$'),
       use: loader
