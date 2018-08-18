@@ -39,9 +39,10 @@
                button-text="返回"
                @click="gobackHandler"
                v-else-if="isEmpty" />
-    <bus-alert type="error"
+    <bus-alert type="warn"
                msg="查询失败"
                button-text="重新查询"
+               :button-loading="loading"
                @click="getRouterDetail"
                v-else-if="isError" />
   </view>
@@ -59,6 +60,7 @@ const createData = function() {
     direction: 0,
     request: null,
     station: null,
+    loading: false,
     isError: false,
     isEmpty: false,
     currentIndex: null,
@@ -90,7 +92,7 @@ export default {
     },
     // 获取公交详情
     getRouterDetail() {
-      wx.showLoading()
+      this.loading = true
       this.request = getBusByRouter(this.$root.$mp.query.router)
         .then((data) => {
           this.data = data
@@ -106,7 +108,9 @@ export default {
           console.log(error)
         })
         .always(() => {
-          wx.hideLoading()
+          setTimeout(() => {
+            this.loading = false
+          }, 200)
         })
       return this.request
     },

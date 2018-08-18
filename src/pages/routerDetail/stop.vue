@@ -17,21 +17,17 @@
     <view class="bus-stop__card bus-stop__card--transparent"
           v-else>
       <bus-loading v-if="loading" />
-      <view class="bus-stop__reload"
-            v-else-if="isError">
-        <button type="primary"
-                size="mini"
-                plain
-                @click.stop="queryStopInfo">重新查询</button>
-      </view>
+      <bus-button type="primary"
+                  plain
+                  @click="queryStopInfo"
+                  v-else-if="isError">重新查询</bus-button>
       <view class="bus-stop__empty"
             v-else>
         <bus-icon name="bus-naozhong"
                   extra-class="bus-stop__empty-icon" />
         <text class="bus-stop__empty-text">等待发车</text>
       </view>
-      <view class="bus-stop__title"
-            v-if="title">{{ title }}</view>
+      <slot name="scope" />
     </view>
   </view>
 </template>
@@ -43,9 +39,6 @@ export default {
   name: 'BusStop',
   components: {
     BusCount
-  },
-  created() {
-    this.queryStopInfo()
   },
   beforeDestroy() {
     this.request.abort()
@@ -61,6 +54,12 @@ export default {
   computed: {
     clazz() {
       return 'bus-stop ' + this.extraClass
+    }
+  },
+  watch: {
+    station: {
+      immediate: true,
+      handler: 'queryStopInfo'
     }
   },
   methods: {
@@ -83,6 +82,10 @@ export default {
             this.loading = false
           }, 200)
         })
+    },
+    // 暴露给父组件调用
+    refresh() {
+      this.queryStopInfo()
     }
   },
   props: {
@@ -91,8 +94,8 @@ export default {
       type: Object,
       default: null
     },
-    title: {
-      type: String,
+    scope: {
+      type: Object,
       default: null
     },
     extraClass: {
@@ -120,9 +123,6 @@ export default {
       background: transparent;
     }
   }
-  @include e(title) {
-    color: $--color-title;
-  }
   @include e(extra-info) {
     @include extend-rule(center-row);
   }
@@ -133,8 +133,6 @@ export default {
     text-align: center;
   }
   @include e(reload) {
-    display: flex;
-    align-items: center;
     height: 48px;
   }
   @include e(empty) {

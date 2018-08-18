@@ -5,8 +5,13 @@
       <view class="bus-collection__card"
             v-for="(router,key) in data"
             :key="key">
-        <view class="bus-collection__item-title">
-          <view class="bus-collection__name">{{ router.name }}</view>
+        <view class="bus-collection__item-hd">
+          <view class="bus-collection__primary-info">
+            <view class="bus-collection__name">{{ router.name }}</view>
+            <bus-icon name="bus-sync"
+                      extra-class="bus-collection__refresh"
+                      @click="refreshHandler(router.sid)" />
+          </view>
           <view class="bus-collection__extra-info">
             <view class="bus-collection__time">首班车：{{ router.startTime }}</view>
             <view class="bus-collection__time">末班车：{{ router.endTime }}</view>
@@ -19,7 +24,12 @@
                 v-for="(station,index) in router.stations"
                 :key="station">
             <bus-stop :station="getParams(router,station)"
-                      :title="station.name" />
+                      :scope="{title:station.name}"
+                      :ref="router.sid">
+              <template slot="scope">
+                <view class="bus-collection__stop-title">{{ scope.title }}</view>
+              </template>
+            </bus-stop>
             <view class="bus-collection__delete">
               <bus-button type="text"
                           @click="deleteHandler(router.sid,index)">删除</bus-button>
@@ -36,14 +46,15 @@
 import Store from '@/js/store'
 import BusStop from '../routerDetail/stop'
 import debounce from '@/js/debounce'
-import { isEmpty, clone } from '@/js/utils'
+import { isEmpty } from '@/js/utils'
 import { COLLECTION_LOCAL_KEY } from '@/js/constants'
 
 const createData = function() {
   return {
     data: null,
+    scope: {},
     isEmpty: false,
-    isRefresh: false
+    currentSid: null
   }
 }
 export default {
@@ -59,29 +70,6 @@ export default {
     // 重置数据
     this.$setData(createData())
   },
-  // 下拉刷新
-  onPullDownRefresh: debounce(
-    function() {
-      wx.showToast({ title: '111' })
-      if (!this.isEmpty) {
-        // 备份数据
-        const _data = clone(this.data)
-        // 重置数据
-        this.$setData(createData())
-        // 赋值，重新渲染 `stop` 组件
-        this.$nextTick(() => {
-          this.data = _data
-          wx.stopPullDownRefresh()
-        })
-      } else {
-        wx.stopPullDownRefresh()
-      }
-    },
-    2000,
-    {
-      leading: true
-    }
-  ),
   data() {
     return createData()
   },
@@ -110,6 +98,26 @@ export default {
         stationIndex: station.index + 1
       }
     },
+    // 刷新路线
+    refreshHandler: debounce(
+      function(sid) {
+        try {
+          this.$refs[sid].forEach((item) => item.refresh())
+        } catch (e) {
+          wx.showToast({
+            icon: 'none',
+            duration: 1000,
+            title: '刷新失败'
+          })
+          console.log(e)
+        }
+      },
+      500,
+      {
+        leading: true
+      }
+    ),
+    // 删除站台
     deleteHandler(sid, index) {
       const { data } = this
       const stations = data[sid]['stations']
@@ -161,12 +169,15 @@ export default {
     box-sizing: border-box;
     background: $--color-white;
     @include extend-rule(list-item);
-    .bus-stop__empty {
-      margin: 20px 0;
-    }
   }
-  @include e(title) {
+  @include e(hd) {
     padding: 5px 0;
+  }
+  @include e(primary-info) {
+    @include extend-rule(between-row);
+  }
+  @include e(refresh) {
+    padding: 10px;
   }
   @include e(name) {
     font-weight: bold;
@@ -184,6 +195,10 @@ export default {
   @include e(price) {
     flex: 1;
     font-size: $--font-size-desc;
+  }
+  @include e(stop-title) {
+    margin-top: 10px;
+    color: $--color-title;
   }
   @include e(delete) {
     padding: 0 10px 15px 0;

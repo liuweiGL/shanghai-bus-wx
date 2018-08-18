@@ -6,18 +6,29 @@
             size="20" />
       <text class="bus-alert__text">{{ msg }}</text>
     </view>
-    <button class="bus-alert__btn"
-            type="primary"
-            size="mini"
-            plain
-            @click="clickHandler"
-            v-if="buttonText">{{ buttonText }}</button>
+    <bus-button extra-class="bus-alert__btn"
+                type="primary"
+                :loading="buttonLoading"
+                :disabled="buttonLoading"
+                :scope="{buttonText}"
+                plain
+                @click="clickHandler"
+                v-if="buttonText">
+      <template slot="scope">
+        <text>{{ scope.buttonText }}</text>
+      </template>
+    </bus-button>
   </view>
 </template>
 <script>
 import throttle from '@/js/throttle'
 export default {
   name: 'BusAlert',
+  data() {
+    return {
+      scope: {} // 占位，mpvue的bug，slot中绑定的状态必须在父组件注册，不然会报错
+    }
+  },
   methods: {
     clickHandler: throttle(function() {
       this.$emit('click')
@@ -33,8 +44,12 @@ export default {
       default: null
     },
     buttonText: {
-      type: Function,
+      type: String,
       default: null
+    },
+    buttonLoading: {
+      type: Boolean,
+      default: false
     }
   }
 }
@@ -54,7 +69,6 @@ export default {
   }
   @include e(btn) {
     margin-top: 10px;
-    @include extend-rule(small-btn);
   }
 }
 </style>

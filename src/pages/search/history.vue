@@ -4,11 +4,9 @@
       <template slot="title">
         <view class="bus-history__hd">
           <text class="bus-history__title">搜索历史：</text>
-          <button size="mini"
-                  class="bus-history__btn"
-                  hover-class="is-hover"
-                  plain
-                  @click="clearHistoryHandler">清除</button>
+          <bus-button extra-class="bus-history__btn"
+                      plain
+                      @click="clearHistoryHandler">清除</bus-button>
         </view>
       </template>
       <template slot="list">
@@ -98,18 +96,13 @@ export default {
     font-size: $--font-size-base;
   }
   @include e(btn) {
-    &[plain] {
-      margin: 0;
-      line-height: 1;
-      padding: $--padding;
-      color: $--color-primary;
-      font-size: $--font-size-base;
-      border: none;
-      border-radius: 0;
-      @include when(hover) {
-        color: $--color-primary-light;
-      }
-    }
+    margin: 0;
+    line-height: 1;
+    padding: $--padding;
+    color: $--color-primary;
+    font-size: $--font-size-base;
+    border: none;
+    border-radius: 0;
   }
   @include e(item) {
     @include extend-rule(middle-row);

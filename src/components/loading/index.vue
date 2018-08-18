@@ -1,29 +1,29 @@
 <template>
-  <view class="bus-loading">
-    <view class="bus-loading__wrap">
-      <view class="bus-loading__item"
+  <view class="bus-loading-component">
+    <view class="bus-loading-component__wrap">
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
-      <view class="bus-loading__item"
+      <view class="bus-loading-component__item"
             :style="style" />
     </view>
   </view>
@@ -55,7 +55,8 @@ export default {
 </script>
 
 <style lang="scss">
-@include b(loading) {
+// 防止与 `icon` 重名
+@include b(loading-component) {
   position: relative;
   height: 48px;
   @include e(wrap) {
@@ -76,7 +77,7 @@ export default {
     background: $--color-primary;
     border-radius: 24%;
     transform-origin: 2px 24px;
-    animation: bus-loading linear 1s infinite;
+    animation: bus-loading-component linear 1s infinite;
     &:nth-child(1) {
       transform: rotate(0deg);
       animation-delay: -0.916666666666667s;
@@ -126,7 +127,7 @@ export default {
       animation-delay: 0s;
     }
   }
-  @keyframes bus-loading {
+  @keyframes bus-loading-component {
     0% {
       opacity: 1;
     }

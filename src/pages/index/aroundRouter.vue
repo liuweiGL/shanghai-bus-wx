@@ -20,13 +20,13 @@
               plain
               v-else-if="fail === 'EXCEPTION'">报告错误</button>
       <!-- 请求失败 -->
-      <bus-alert type="error"
+      <bus-alert type="warn"
                  msg="请求失败"
                  button-text="重新获取"
                  @click="getRouterNames"
                  v-else-if="fail === 'API'" />
       <!-- 请求失败 -->
-      <bus-alert type="error"
+      <bus-alert type="warn"
                  msg="定位失败"
                  button-text="重新定位"
                  @click="getLocation"
@@ -182,9 +182,10 @@ export default {
     text-align: center;
   }
   @include e(btn) {
-    @include extend-rule(small-btn);
+    padding: 4px 12px;
+    margin-top: 100px;
   }
-  .bus-loading {
+  .bus-loading-component {
     margin-top: 100px;
   }
 }

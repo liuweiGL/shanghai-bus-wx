@@ -1,8 +1,14 @@
 <template>
-  <view :class="['bus-button','bus-button--' + type,'is-' + size,plain ? 'is-plain' : '',extraClass]"
+  <view :class="['bus-button','bus-button--' + type,'is-' + size,{ 'is-plain': plain },{ 'is-disabled': disabled },extraClass]"
         hover-class="is-hover"
-        @click="clickHandler">
-    <slot />
+        @click.stop="clickHandler">
+    <bus-icon name="bus-loading"
+              extra-class="bus-button__icon"
+              v-if="loading" />
+    <view class="bus-button__label">
+      <slot />
+      <slot name="scope" />
+    </view>
   </view>
 </template>
 
@@ -11,7 +17,7 @@ export default {
   name: 'BusButton',
   methods: {
     clickHandler(event) {
-      this.$emit('click', event)
+      !this.disabled && this.$emit('click', event)
     }
   },
   props: {
@@ -33,9 +39,21 @@ export default {
       type: Boolean,
       default: false
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    },
     extraClass: {
       type: String,
       default: ''
+    },
+    scope: {
+      type: Object,
+      default: null
     }
   }
 }
@@ -43,6 +61,9 @@ export default {
 
 <style lang="scss">
 @include b(button) {
+  padding: 5px 10px;
+  text-align: center;
+  border-radius: 4px;
   font-size: $--font-size-h4;
   @include m(default) {
     color: $--color-text;
@@ -76,9 +97,25 @@ export default {
   @include when(plain) {
     background-color: transparent;
   }
+  @include when(disabled) {
+    opacity: 0.3;
+  }
   @include when(mini) {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: $--font-size-extra;
+  }
+  @include e(icon) {
+    display: block;
+    margin: 0;
+    color: currentColor;
+    font-weight: bold;
+    font-size: $--font-size-base;
+    @include extend-rule(spinning);
+  }
+  @include e(label) {
+    margin-left: 5px;
   }
 }
 </style>

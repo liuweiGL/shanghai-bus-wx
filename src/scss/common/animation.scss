@@ -1,0 +1,8 @@
+@keyframes spinning {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}

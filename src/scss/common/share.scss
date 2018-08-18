@@ -40,11 +40,6 @@
   @include extend-rule(center-col);
 }
 
-@include share-rule(small-btn) {
-  padding: 4px 12px;
-  margin-top: 100px;
-}
-
 @include share-rule(list-item) {
   position: relative;
   padding: $--padding;
@@ -65,4 +60,8 @@
     transform: scaleY(0.5);
     transform-origin: 0 0;
   }
+}
+
+@include share-rule(spinning){
+  animation: spinning 1.5s linear infinite;
 }
