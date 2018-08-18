@@ -130,6 +130,7 @@ export default {
             stations.splice(index, 1)
             if (!stations.length) {
               delete data[sid]
+              this.isEmpty = isEmpty(data)
             }
             Store.set(COLLECTION_LOCAL_KEY, this.data)
           }
