@@ -1,5 +1,6 @@
 <template>
-  <view class="bus-loading-component">
+  <view class="bus-loading-component"
+        :class="extraClass">
     <view class="bus-loading-component__wrap">
       <view class="bus-loading-component__item"
             :style="style" />
@@ -49,6 +50,10 @@ export default {
     color: {
       type: String,
       default: null
+    },
+    extraClass: {
+      type: String,
+      default: ''
     }
   }
 }

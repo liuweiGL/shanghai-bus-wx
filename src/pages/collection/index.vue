@@ -197,11 +197,11 @@ export default {
     font-size: $--font-size-desc;
   }
   @include e(stop-title) {
-    margin-top: 10px;
+    margin-top: 5px;
     color: $--color-title;
   }
   @include e(delete) {
-    padding: 0 10px 15px 0;
+    padding: 0 10px 5px 0;
     text-align: center;
   }
 }

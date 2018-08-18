@@ -5,13 +5,12 @@
       <view class="bus-stop__card">
         <bus-count :format="format"
                    :time="data[0]['time']" />
-        <view class="bus-stop__title"
-              v-if="title">{{ title }}</view>
         <view class="bus-stop__extra-info">
           <view class="bus-stop__station-num">剩余{{ data[0]['stationSum'] }}站</view>
           <view class="bus-stop__distance">约{{ data[0]['distance'] }}米</view>
         </view>
         <view class="bus-stop__plate-number">车牌：{{ data[0]['plateNumber'] }}</view>
+        <slot name="scope" />
       </view>
     </scroll-view>
     <view class="bus-stop__card bus-stop__card--transparent"
@@ -27,7 +26,9 @@
                   extra-class="bus-stop__empty-icon" />
         <text class="bus-stop__empty-text">等待发车</text>
       </view>
-      <slot name="scope" />
+      <view class="bus-stop__slot-wrap">
+        <slot name="scope" />
+      </view>
     </view>
   </view>
 </template>
@@ -64,6 +65,7 @@ export default {
   },
   methods: {
     queryStopInfo() {
+      this.data = null
       this.loading = true
       this.request = getStopInfo(this.station)
         .then((data) => {
@@ -145,6 +147,9 @@ export default {
   @include e(empty-text) {
     margin-left: 5px;
     color: $--color-disable;
+  }
+  @include e(slot-wrap) {
+    margin-top: 10px;
   }
 }
 </style>
