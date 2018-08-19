@@ -111,8 +111,8 @@ export default {
         return
       }
       this.loading = true
-      // getBusByLocation(this.location)
-      getBusByLocation('121.4737,31.23037')
+      getBusByLocation(this.location)
+      // getBusByLocation('121.4737,31.23037')
         .then((data) => {
           this.list = data
           this.loading = false

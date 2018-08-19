@@ -24,6 +24,11 @@ export default {
   components: {
     BusAroundRouter
   },
+  onShareAppMessage() {
+    return {
+      title: '附近公交'
+    }
+  },
   methods: {
     gotoSeachHandler() {
       wx.navigateTo({

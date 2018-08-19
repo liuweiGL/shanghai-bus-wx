@@ -72,6 +72,12 @@ export default {
   components: {
     BusStop
   },
+  onShareAppMessage() {
+    return {
+      title: this.data ? this.data.name : null,
+      path: `/pages/routerDetail/main?router=${this.$root.$mp.query.router}`
+    }
+  },
   onLoad() {
     // 获取详情数据
     this.getRouterDetail().then(this.markStation)
@@ -260,6 +266,8 @@ export default {
   }
   @include e(swap) {
     padding: 0 10px;
+    font-size: $--font-size-h3;
+    @include extend-rule(middle-row);
   }
   @include e(time) {
     flex: 1;

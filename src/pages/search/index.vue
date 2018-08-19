@@ -47,6 +47,11 @@ export default {
     BusHistory,
     BusAutocomplete
   },
+  onShareAppMessage() {
+    return {
+      title: '公交搜索'
+    }
+  },
   onHide() {
     /**
      * 详情页返回搜索页触发
