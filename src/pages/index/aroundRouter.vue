@@ -112,7 +112,7 @@ export default {
       }
       this.loading = true
       getBusByLocation(this.location)
-      // getBusByLocation('121.4737,31.23037')
+        // getBusByLocation('121.4737,31.23037')
         .then((data) => {
           this.list = data
           this.loading = false
@@ -128,10 +128,14 @@ export default {
     // hook `API` 升级
     openSettingHandler(res) {
       // 用户开启，重新定位
-      if (res.authSetting.scope.userLocation) {
-        this.getLocation()
-      } else {
-        this.fail = Fail.PERMISSION
+      try {
+        if (res.mp.detail.authSetting['scope.userLocation']) {
+          this.getLocation()
+        } else {
+          this.fail = Fail.PERMISSION
+        }
+      } catch (error) {
+        this.errorHandler(error)
       }
     },
     // 开启失败，打开反馈面板
