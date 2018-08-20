@@ -22,8 +22,9 @@ export function getBusByRouter(router) {
  *   stopid: number // 站台下标
  * }
  */
-export function getStopInfo(station) {
+export function getStopInfo(station, delay) {
   return request({
+    delay,
     url: 'bus/stop',
     data: station
   })

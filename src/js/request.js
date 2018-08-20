@@ -10,6 +10,7 @@ class Request {
   static default = {
     baseURL: 'https://liuweigl.cn',
     // baseURL: 'http://localhost:3000',
+    delay: 0,
     method: 'GET',
     dataType: 'json',
     responseType: 'text',
@@ -18,6 +19,7 @@ class Request {
     }
   }
   constructor(options) {
+    this.timer = null
     this.promise = null
     this.requestTask = null
     this.options = Object.assign({}, Request.default, options, {
@@ -27,26 +29,30 @@ class Request {
   }
   fetch() {
     this.promise = new Promise((resolve, reject) => {
-      this.requestTask = wx.request(
-        Object.assign(this.options, {
-          success: (response) => {
-            const {
-              data: { status, data }
-            } = response
-            if (status === Status.SUCCESS) {
-              resolve(data)
-            } else {
-              reject(data)
-            }
-          },
-          fail: (error) => reject(error)
-        })
-      )
+      this.timer = setTimeout(() => {
+        this.requestTask = wx.request(
+          Object.assign(this.options, {
+            success: (response) => {
+              const {
+                data: { status, data }
+              } = response
+              if (status === Status.SUCCESS) {
+                resolve(data)
+              } else {
+                reject(data)
+              }
+            },
+            fail: (error) => reject(error)
+          })
+        )
+      }, this.options.delay)
     })
     return this
   }
   abort() {
-    this.requestTask.abort()
+    const { timer, requestTask } = this
+    timer && clearTimeout(timer)
+    requestTask && requestTask.abort()
     return this
   }
   then(fn) {

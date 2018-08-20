@@ -67,11 +67,9 @@ export default {
     queryStopInfo() {
       this.data = null
       this.loading = true
-      this.request = getStopInfo(this.station)
+      this.request = getStopInfo(this.station, 1000)
         .then((data) => {
-          this.$nextTick(() => {
-            this.data = data
-          })
+          this.data = data
         })
         .catch((error) => {
           console.log(error)
