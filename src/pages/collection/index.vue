@@ -25,7 +25,7 @@
                 :key="station">
             <bus-stop :station="getParams(router,station)"
                       :scope="{title:station.name}"
-                      :ref="router.sid">
+                      :ref="router.name">
               <template slot="scope">
                 <view class="bus-collection__stop-title">{{ scope.title }}</view>
               </template>
