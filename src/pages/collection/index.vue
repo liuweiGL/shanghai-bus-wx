@@ -10,7 +10,7 @@
             <view class="bus-collection__name">{{ router.name }}</view>
             <bus-icon name="bus-sync"
                       extra-class="bus-collection__refresh"
-                      @click="refreshHandler(router.sid)" />
+                      @click="refreshHandler(router.name)" />
           </view>
           <view class="bus-collection__extra-info">
             <view class="bus-collection__time">首班车：{{ router.startTime }}</view>
@@ -32,7 +32,7 @@
             </bus-stop>
             <view class="bus-collection__delete">
               <bus-button type="text"
-                          @click="deleteHandler(router.sid,index)">删除</bus-button>
+                          @click="deleteHandler(router.name,index)">删除</bus-button>
             </view>
           </view>
         </scroll-view>
@@ -100,9 +100,9 @@ export default {
     },
     // 刷新路线
     refreshHandler: debounce(
-      function(sid) {
+      function(name) {
         try {
-          this.$refs[sid].forEach((item) => item.refresh())
+          this.$refs[name].forEach((item) => item.refresh())
         } catch (e) {
           wx.showToast({
             icon: 'none',
@@ -118,9 +118,9 @@ export default {
       }
     ),
     // 删除站台
-    deleteHandler(sid, index) {
+    deleteHandler(name, index) {
       const { data } = this
-      const stations = data[sid]['stations']
+      const stations = data[name]['stations']
       wx.showModal({
         title: '确定删除？',
         content: `当前站台：${stations[index]['name']}`,
@@ -129,7 +129,7 @@ export default {
           if (res.confirm) {
             stations.splice(index, 1)
             if (!stations.length) {
-              delete data[sid]
+              delete data[name]
               this.isEmpty = isEmpty(data)
             }
             Store.set(COLLECTION_LOCAL_KEY, this.data)

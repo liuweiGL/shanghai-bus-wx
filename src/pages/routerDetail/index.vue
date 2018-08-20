@@ -83,10 +83,10 @@ export default {
     this.getRouterDetail().then(this.markStation)
   },
   onUnload() {
-    // 重置数据源
-    this.$setData(createData())
     // 取消未完成的请求
     this.request && this.request.abort()
+    // 重置数据源
+    this.$setData(createData())
   },
   data() {
     return createData()
@@ -135,10 +135,7 @@ export default {
     },
     // 反转路线
     swapRouterHandler() {
-      const {
-        data,
-        data: { name, stations }
-      } = this
+      const { data, data: { name, stations } } = this
       this.currentIndex = null
       this.direction = this.direction ? 0 : 1
       this.data = {
@@ -156,7 +153,7 @@ export default {
     },
     // 添加样式
     getIconClass(item) {
-      const routerData = this.collectionData[this.data.sid]
+      const routerData = this.collectionData[this.data.name]
       if (routerData) {
         const find = (station) => station.name === item
         return (
@@ -175,7 +172,7 @@ export default {
             collectionData,
             data: { sid, name, startTime, endTime, price }
           } = this
-          let routerData = collectionData[sid]
+          let routerData = collectionData[name]
           if (!routerData) {
             routerData = {
               sid,
@@ -191,7 +188,7 @@ export default {
                 }
               ]
             }
-            this.$set(collectionData, sid, routerData)
+            this.$set(collectionData, name, routerData)
           } else {
             const { stations } = routerData
             const find = (station) => station.name === item
@@ -200,7 +197,7 @@ export default {
               stations.splice(stations.findIndex(find), 1)
               if (!stations.length) {
                 // 该路线没有收藏的站台，清空路线数据
-                delete collectionData[sid]
+                delete collectionData[name]
               }
             } else {
               // 加入收藏
@@ -224,9 +221,7 @@ export default {
     ),
     // 排序
     compare(a, b) {
-      const {
-        data: { stations }
-      } = this
+      const { data: { stations } } = this
       return stations.indexOf(a.name) - stations.indexOf(b.name)
     },
     // 查询信息为空，返回
