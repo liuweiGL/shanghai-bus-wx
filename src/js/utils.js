@@ -15,7 +15,7 @@ export function parseUrl(url) {
     'search',
     'hash'
   ]
-  const reg = /(([^:]*:)\/\/(([^:/?#]*) (:\d+)? ))(\/[^?#]*)?(\?[^#]*)?(#.*)?/
+  const reg = /((?:([^:]*:)\/\/)?(([^:/?#]*)(?::(\d+))?))([^?#]*)(\?[^#]*)?(#.*)?/
   const match = reg.exec(url)
   keys.forEach((key, index) => {
     result[key] = match[index] || ''
