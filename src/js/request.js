@@ -8,7 +8,7 @@ const Status = {
 
 class Request {
   static default = {
-    baseURL: 'https://liuweigl.cn',
+    baseURL: 'https://bus.liuweigl.cn',
     // baseURL: 'http://localhost:3000',
     delay: 0,
     method: 'GET',

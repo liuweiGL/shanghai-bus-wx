@@ -25,7 +25,6 @@ module.exports = {
   rules: {
     'semi': 0,
     'indent': 0,
-    'no-var': 2,
     'no-tabs': 0,
     'import/first': 0,
     'import/no-duplicates': 0,

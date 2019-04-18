@@ -1,4 +1,8 @@
 {
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于查询周围公交路线信息"
+    },
   "pages": [
     "pages/index/main",
     "pages/search/main",
@@ -7,14 +11,14 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarTextStyle": "#fff",
+    "navigationBarTextStyle": "white",
     "navigationBarTitleText": "魔都公交",
     "navigationBarBackgroundColor": "#2f54eb"
   },
   "tabBar": {
     "position": "bottom",
     "borderStyle": "black",
-    "backgroundColor": "#fff",
+    "backgroundColor": "white",
     "selectedColor": "#2f54eb",
     "color": "#333",
     "list": [
