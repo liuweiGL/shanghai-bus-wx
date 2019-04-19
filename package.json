@@ -1,12 +1,12 @@
 {
   "name": "demo",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "A Mpvue project",
   "author": "liuwei <lliuwei1185032659@gmail.com>",
   "private": true,
   "scripts": {
     "start": "npm run dev",
-    "dev": "node build/dev-server.js",
+    "dev": "node build/dev-server.js wx",
     "build": "node build/build.js wx",
     "lint": "eslint --ext .js,.vue src"
   },
