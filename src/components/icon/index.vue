@@ -1,7 +1,9 @@
 <template>
-  <view :class="myClass"
-        hover-class="is-hover"
-        @click.stop="clickHandler" />
+  <view
+    :class="myClass"
+    hover-class="is-hover"
+    @click.stop="clickHandler"
+  />
 </template>
 <script>
 export default {

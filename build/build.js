@@ -1,8 +1,6 @@
 require('./check-versions')()
 
-
 process.env.NODE_ENV = 'production'
-process.env.PLATFORM = process.argv[process.argv.length - 1] || 'wx'
 
 var ora = require('ora')
 var rm = require('rimraf')
@@ -11,7 +9,6 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
-var utils = require('./utils')
 
 var spinner = ora('building for production...')
 spinner.start()
@@ -21,9 +18,6 @@ rm(path.join(config.build.assetsRoot, '*'), err => {
   webpack(webpackConfig, function (err, stats) {
     spinner.stop()
     if (err) throw err
-    if (process.env.PLATFORM === 'swan') {
-      utils.writeFrameworkinfo()
-    }
     process.stdout.write(stats.toString({
       colors: true,
       modules: false,

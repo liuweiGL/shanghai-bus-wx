@@ -1,13 +1,9 @@
-var path = require('path')
-var fs = require('fs')
-var config = require('../config')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var mpvueInfo = require('../node_modules/mpvue/package.json')
-var packageInfo = require('../package.json')
-var mkdirp = require('mkdirp')
+let path = require('path')
+let config = require('../config')
+let ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 exports.assetsPath = function(_path) {
-  var assetsSubDirectory =
+  let assetsSubDirectory =
     process.env.NODE_ENV === 'production'
       ? config.build.assetsSubDirectory
       : config.dev.assetsSubDirectory
@@ -17,7 +13,7 @@ exports.assetsPath = function(_path) {
 exports.cssLoaders = function(options) {
   options = options || {}
 
-  var cssLoader = {
+  let cssLoader = {
     loader: 'css-loader',
     options: {
       minimize: process.env.NODE_ENV === 'production',
@@ -25,14 +21,14 @@ exports.cssLoaders = function(options) {
     }
   }
 
-  var postcssLoader = {
+  let postcssLoader = {
     loader: 'postcss-loader',
     options: {
       sourceMap: true
     }
   }
 
-  var px2rpxLoader = {
+  let px2rpxLoader = {
     loader: 'px2rpx-loader',
     options: {
       baseDpr: 1,
@@ -41,7 +37,7 @@ exports.cssLoaders = function(options) {
   }
 
   // 导入全局scss
-  var sassResourceLoader = {
+  let sassResourceLoader = {
     loader: 'sass-resources-loader',
     options: {
       resources: [path.resolve(__dirname, '../src/scss/global.scss')]
@@ -50,7 +46,7 @@ exports.cssLoaders = function(options) {
 
   // generate loader string to be used with extract text plugin
   function generateLoaders(loader, loaderOptions, anotherLoader) {
-    var loaders = [cssLoader, px2rpxLoader, postcssLoader]
+    let loaders = [cssLoader, px2rpxLoader, postcssLoader]
     if (loader) {
       loaders.push({
         loader: loader + '-loader',
@@ -82,7 +78,7 @@ exports.cssLoaders = function(options) {
     wxss: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
+    sass: generateLoaders('sass', { indentedSyntax: true }, sassResourceLoader),
     scss: generateLoaders('sass', {}, sassResourceLoader),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
@@ -91,40 +87,14 @@ exports.cssLoaders = function(options) {
 
 // Generate loaders for standalone style files (outside of .vue)
 exports.styleLoaders = function(options) {
-  var output = []
-  var loaders = exports.cssLoaders(options)
-  for (var extension in loaders) {
-    var loader = loaders[extension]
+  let output = []
+  let loaders = exports.cssLoaders(options)
+  for (let extension in loaders) {
+    let loader = loaders[extension]
     output.push({
       test: new RegExp('\\.' + extension + '$'),
       use: loader
     })
   }
   return output
-}
-
-const writeFile = async (filePath, content) => {
-  let dir = path.dirname(filePath)
-  let exist = fs.existsSync(dir)
-  if (!exist) {
-    await mkdirp(dir)
-  }
-  await fs.writeFileSync(filePath, content, 'utf8')
-}
-
-exports.writeFrameworkinfo = function() {
-  var buildInfo = {
-    toolName: mpvueInfo.name,
-    toolFrameWorkVersion: mpvueInfo.version,
-    toolCliVersion: packageInfo.mpvueTemplateProjectVersion || '',
-    createTime: Date.now()
-  }
-
-  var content = JSON.stringify(buildInfo)
-  var fileName = '.frameworkinfo'
-  var rootDir = path.resolve(__dirname, `../${fileName}`)
-  var distDir = path.resolve(config.build.assetsRoot, `./${fileName}`)
-
-  writeFile(rootDir, content)
-  writeFile(distDir, content)
 }

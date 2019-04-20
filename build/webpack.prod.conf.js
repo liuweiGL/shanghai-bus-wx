@@ -1,18 +1,18 @@
-var path = require('path')
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('../config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
+let path = require('path')
+let utils = require('./utils')
+let webpack = require('webpack')
+let config = require('../config')
+let merge = require('webpack-merge')
+let baseWebpackConfig = require('./webpack.base.conf')
+let UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+let CopyWebpackPlugin = require('copy-webpack-plugin')
 // var HtmlWebpackPlugin = require('html-webpack-plugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var MpvueVendorPlugin = require('webpack-mpvue-vendor-plugin')
-var env = config.build.env
+let ExtractTextPlugin = require('extract-text-webpack-plugin')
+let OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-var webpackConfig = merge(baseWebpackConfig, {
+let env = config.build.env
+
+let webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -22,8 +22,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
     path: config.build.assetsRoot,
-    // filename: utils.assetsPath('[name].[chunkhash].js'),
-    // chunkFilename: utils.assetsPath('[id].[chunkhash].js')
+    // filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    // chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
     filename: utils.assetsPath('[name].js'),
     chunkFilename: utils.assetsPath('[id].js')
   },
@@ -32,10 +32,13 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    new UglifyJsPlugin({
+      sourceMap: true
+    }),
     // extract css into its own file
     new ExtractTextPlugin({
-      // filename: utils.assetsPath('[name].[contenthash].css')
-      filename: utils.assetsPath(`[name].${config.build.fileExt.style}`)
+      // filename: utils.assetsPath('css/[name].[contenthash].css')
+      filename: utils.assetsPath('[name].wxss')
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -66,13 +69,14 @@ var webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common/vendor',
-      minChunks: function (module, count) {
+      minChunks: function(module, count) {
         // any required modules inside node_modules are extracted to vendor
         return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf('node_modules') >= 0
-        ) || count > 1
+          (module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf('node_modules') >= 0) ||
+          count > 1
+        )
       }
     }),
     // extract webpack runtime and module manifest to its own file in order to
@@ -81,9 +85,6 @@ var webpackConfig = merge(baseWebpackConfig, {
       name: 'common/manifest',
       chunks: ['common/vendor']
     }),
-    new MpvueVendorPlugin({
-      platform: process.env.PLATFORM
-    })
   ]
 })
 
@@ -106,15 +107,9 @@ var webpackConfig = merge(baseWebpackConfig, {
 // }
 
 if (config.build.bundleAnalyzerReport) {
-  var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  let BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
-}
-
-var useUglifyJs = process.env.PLATFORM !== 'swan'
-if (useUglifyJs) {
-  webpackConfig.plugins.push(new UglifyJsPlugin({
-    sourceMap: true
-  }))
 }
 
 module.exports = webpackConfig

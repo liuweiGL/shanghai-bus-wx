@@ -1,31 +1,41 @@
 <template>
   <view class="bus-search">
     <view class="bus-search__hd">
-      <input class="bus-search__input"
-             type="text"
-             placeholder="搜索"
-             placeholder-class="bus-search__placeholder"
-             v-model="searchText"
-             auto-focus
-             @confirm="searchHandler">
-      <icon size="16"
-            type="search"
-            color="#597ef7"
-            class="bus-search__icon"
-            v-if="!searchText" />
-      <icon size="16"
-            type="clear"
-            color="#85a5ff"
-            class="bus-search__icon"
-            @click="clearHandler"
-            v-if="!!searchText" />
+      <input
+        class="bus-search__input"
+        type="text"
+        placeholder="搜索"
+        placeholder-class="bus-search__placeholder"
+        v-model="searchText"
+        auto-focus
+        @confirm="searchHandler"
+      >
+      <icon
+        size="16"
+        type="search"
+        color="#597ef7"
+        class="bus-search__icon"
+        v-if="!searchText"
+      />
+      <icon
+        size="16"
+        type="clear"
+        color="#85a5ff"
+        class="bus-search__icon"
+        @click="clearHandler"
+        v-if="!!searchText"
+      />
     </view>
     <view class="bus-search__bd">
-      <bus-autocomplete v-model="searchText"
-                        @item-click="itemClickHandler"
-                        v-if="searchText" />
-      <bus-history :search-value="searchValue"
-                   @item-click="itemClickHandler" />
+      <bus-autocomplete
+        v-model="searchText"
+        @item-click="itemClickHandler"
+        v-if="searchText"
+      />
+      <bus-history
+        :search-value="searchValue"
+        @item-click="itemClickHandler"
+      />
     </view>
   </view>
 </template>

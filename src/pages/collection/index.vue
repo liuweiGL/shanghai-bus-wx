@@ -1,45 +1,73 @@
 <template>
-  <scroll-view class="bus-collection"
-               scroll-y>
+  <scroll-view
+    class="bus-collection"
+    scroll-y
+  >
     <view class="bus-collection__wrap">
-      <view class="bus-collection__card"
-            v-for="(router,key) in data"
-            :key="key">
+      <view
+        class="bus-collection__card"
+        v-for="(router,key) in data"
+        :key="key"
+      >
         <view class="bus-collection__item-hd">
           <view class="bus-collection__primary-info">
-            <view class="bus-collection__name">{{ router.name }}</view>
-            <bus-icon name="bus-sync"
-                      extra-class="bus-collection__refresh"
-                      @click="refreshHandler(router.name)" />
+            <view class="bus-collection__name">
+              {{ router.name }}
+            </view>
+            <bus-icon
+              name="bus-sync"
+              extra-class="bus-collection__refresh"
+              @click="refreshHandler(router.name)"
+            />
           </view>
           <view class="bus-collection__extra-info">
-            <view class="bus-collection__time">首班车：{{ router.startTime }}</view>
-            <view class="bus-collection__time">末班车：{{ router.endTime }}</view>
-            <view class="bus-collection__price">票价：￥{{ router.price }}</view>
+            <view class="bus-collection__time">
+              首班车：{{ router.startTime }}
+            </view>
+            <view class="bus-collection__time">
+              末班车：{{ router.endTime }}
+            </view>
+            <view class="bus-collection__price">
+              票价：￥{{ router.price }}
+            </view>
           </view>
         </view>
-        <scroll-view class="bus-collection__list"
-                     scroll-x>
-          <view class="bus-collection__item"
-                v-for="(station,index) in router.stations"
-                :key="station">
-            <bus-stop :station="getParams(router,station)"
-                      :scope="{title:station.name}"
-                      :ref="router.name">
+        <scroll-view
+          class="bus-collection__list"
+          scroll-x
+        >
+          <view
+            class="bus-collection__item"
+            v-for="(station,index) in router.stations"
+            :key="station"
+          >
+            <bus-stop
+              :station="getParams(router,station)"
+              :scope="{title:station.name}"
+              :ref="router.name"
+            >
               <template slot="scope">
-                <view class="bus-collection__stop-title">{{ scope.title }}</view>
+                <view class="bus-collection__stop-title">
+                  {{ scope.title }}
+                </view>
               </template>
             </bus-stop>
             <view class="bus-collection__delete">
-              <bus-button type="text"
-                          @click="deleteHandler(router.name,index)">删除</bus-button>
+              <bus-button
+                type="text"
+                @click="deleteHandler(router.name,index)"
+              >
+                删除
+              </bus-button>
             </view>
           </view>
         </scroll-view>
       </view>
     </view>
-    <bus-alert v-if="isEmpty"
-               msg="还没有收藏公交哦" />
+    <bus-alert
+      v-if="isEmpty"
+      msg="还没有收藏公交哦"
+    />
   </scroll-view>
 </template>
 <script>

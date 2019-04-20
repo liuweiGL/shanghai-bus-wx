@@ -1,13 +1,19 @@
 <template>
   <view class="bus-index">
     <view class="bus-index__search">
-      <view class="bus-index__search-inner"
-            @click="gotoSeachHandler">
-        <text class="bus-index__search-placeholder">搜索</text>
-        <icon size="16"
-              type="search"
-              color="#597ef7"
-              class="bus-index__search-icon" />
+      <view
+        class="bus-index__search-inner"
+        @click="gotoSeachHandler"
+      >
+        <text class="bus-index__search-placeholder">
+          搜索
+        </text>
+        <icon
+          size="16"
+          type="search"
+          color="#597ef7"
+          class="bus-index__search-icon"
+        />
       </view>
     </view>
     <view class="bus-index__around-router">

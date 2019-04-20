@@ -1,5 +1,7 @@
 <template>
-  <view class="bus-count">{{ text }}</view>
+  <view class="bus-count">
+    {{ text }}
+  </view>
 </template>
 
 <script>

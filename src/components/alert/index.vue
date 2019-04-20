@@ -2,18 +2,24 @@
   <view class="bus-alert">
     <slot />
     <view class="bus-alert__inner">
-      <icon :type="type"
-            size="20" />
-      <text class="bus-alert__text">{{ msg }}</text>
+      <icon
+        :type="type"
+        size="20"
+      />
+      <text class="bus-alert__text">
+        {{ msg }}
+      </text>
     </view>
-    <bus-button extra-class="bus-alert__btn"
-                type="primary"
-                :loading="buttonLoading"
-                :disabled="buttonLoading"
-                :scope="{buttonText}"
-                plain
-                @click="clickHandler"
-                v-if="buttonText">
+    <bus-button
+      extra-class="bus-alert__btn"
+      type="primary"
+      :loading="buttonLoading"
+      :disabled="buttonLoading"
+      :scope="{buttonText}"
+      plain
+      @click="clickHandler"
+      v-if="buttonText"
+    >
       <template slot="scope">
         <text>{{ scope.buttonText }}</text>
       </template>

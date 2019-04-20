@@ -1,49 +1,71 @@
 <template>
   <view class="bus-around-router">
     <bus-loading v-if="loading" />
-    <view class="bus-around-router__fail"
-          v-else-if="fail">
+    <view
+      class="bus-around-router__fail"
+      v-else-if="fail"
+    >
       <!-- 打开设置面板 -->
-      <button class="bus-around-router__btn"
-              open-type="openSetting"
-              type="primary"
-              size="mini"
-              plain
-              @error="errorHandler"
-              @opensetting="openSettingHandler"
-              v-if="fail === 'PERMISSION'">开启定位</button>
+      <button
+        class="bus-around-router__btn"
+        open-type="openSetting"
+        type="primary"
+        size="mini"
+        plain
+        @error="errorHandler"
+        @opensetting="openSettingHandler"
+        v-if="fail === 'PERMISSION'"
+      >
+        开启定位
+      </button>
       <!--  打开反馈页面 -->
-      <button class="bus-around-router__btn"
-              open-type="feedback"
-              type="primary"
-              size="mini"
-              plain
-              v-else-if="fail === 'EXCEPTION'">报告错误</button>
+      <button
+        class="bus-around-router__btn"
+        open-type="feedback"
+        type="primary"
+        size="mini"
+        plain
+        v-else-if="fail === 'EXCEPTION'"
+      >
+        报告错误
+      </button>
       <!-- 请求失败 -->
-      <bus-alert type="warn"
-                 msg="请求失败"
-                 button-text="重新获取"
-                 @click="getRouterNames"
-                 v-else-if="fail === 'API'" />
+      <bus-alert
+        type="warn"
+        msg="请求失败"
+        button-text="重新获取"
+        @click="getRouterNames"
+        v-else-if="fail === 'API'"
+      />
       <!-- 请求失败 -->
-      <bus-alert type="warn"
-                 msg="定位失败"
-                 button-text="重新定位"
-                 @click="getLocation"
-                 v-else-if="fail === 'LOCATION'" />
+      <bus-alert
+        type="warn"
+        msg="定位失败"
+        button-text="重新定位"
+        @click="getLocation"
+        v-else-if="fail === 'LOCATION'"
+      />
       <!-- 无公交数据 -->
-      <bus-alert msg="附近没有公交"
-                 v-else-if="fail === 'EMPTY'" />
+      <bus-alert
+        msg="附近没有公交"
+        v-else-if="fail === 'EMPTY'"
+      />
     </view>
-    <bus-list :data="list"
-              @item-click="itemClickHandler"
-              v-else>
+    <bus-list
+      :data="list"
+      @item-click="itemClickHandler"
+      v-else
+    >
       <template slot="title">
         <view class="bus-around-router__hd">
-          <text class="bus-around-router__text">附近公交：</text>
-          <bus-icon name="bus-sync"
-                    extra-class="bus-around-router__icon"
-                    @click="refreshHandler" />
+          <text class="bus-around-router__text">
+            附近公交：
+          </text>
+          <bus-icon
+            name="bus-sync"
+            extra-class="bus-around-router__icon"
+            @click="refreshHandler"
+          />
         </view>
       </template>
     </bus-list>

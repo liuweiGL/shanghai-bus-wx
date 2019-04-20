@@ -1,10 +1,14 @@
 <template>
-  <view :class="['bus-button','bus-button--' + type,'is-' + size,{ 'is-plain': plain },{ 'is-disabled': disabled },extraClass]"
-        hover-class="is-hover"
-        @click.stop="clickHandler">
-    <bus-icon name="bus-loading"
-              extra-class="bus-button__icon"
-              v-if="loading" />
+  <view
+    :class="['bus-button','bus-button--' + type,'is-' + size,{ 'is-plain': plain },{ 'is-disabled': disabled },extraClass]"
+    hover-class="is-hover"
+    @click.stop="clickHandler"
+  >
+    <bus-icon
+      name="bus-loading"
+      extra-class="bus-button__icon"
+      v-if="loading"
+    />
     <view class="bus-button__label">
       <slot />
       <slot name="scope" />

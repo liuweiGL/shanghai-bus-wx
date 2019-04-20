@@ -1,17 +1,17 @@
 {
   "name": "demo",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "A Mpvue project",
   "author": "liuwei <lliuwei1185032659@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "npm run dev",
-    "dev": "node build/dev-server.js wx",
-    "build": "node build/build.js wx",
-    "lint": "eslint --ext .js,.vue src"
+    "dev": "node build/dev-server.js",
+    "start": "node build/dev-server.js",
+    "build": "node build/build.js",
+    "lint": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
-    "mpvue": "^1.4.0"
+    "mpvue": "1.0.13"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
@@ -44,16 +44,16 @@
     "glob": "^7.1.2",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.18.0",
-    "mpvue-loader": "^1.4.0",
-    "mpvue-template-compiler": "^1.4.0",
-    "mpvue-webpack-target": "^1.0.0",
+    "mpvue-loader": "1.1.2",
+    "mpvue-template-compiler": "1.0.13",
+    "mpvue-webpack-target": "1.0.0",
     "node-sass": "^4.9.2",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^2.0.0",
     "portfinder": "^1.0.13",
     "postcss-loader": "^2.1.4",
     "postcss-mpvue-wxss": "^1.0.0",
-    "prettier": "~1.12.1",
+    "prettier": "^1.12.1",
     "px2rpx-loader": "^0.1.10",
     "relative": "^3.0.2",
     "rimraf": "^2.6.0",
@@ -69,8 +69,7 @@
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware-hard-disk": "^1.12.0",
     "webpack-merge": "^4.1.0",
-    "webpack-mpvue-asset-plugin": "^0.1.1",
-    "webpack-mpvue-vendor-plugin": "^2.0.3"
+    "webpack-mpvue-asset-plugin": "0.1.1"
   },
   "engines": {
     "node": ">= 4.0.0",

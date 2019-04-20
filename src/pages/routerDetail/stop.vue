@@ -1,30 +1,52 @@
 <template>
   <view :class="clazz">
-    <scroll-view scroll-x
-                 v-if="data">
+    <scroll-view
+      scroll-x
+      v-if="data"
+    >
       <view class="bus-stop__card">
-        <bus-count :format="format"
-                   :time="data[0]['time']" />
+        <bus-count
+          :format="format"
+          :time="data[0]['time']"
+        />
         <view class="bus-stop__extra-info">
-          <view class="bus-stop__station-num">剩余{{ data[0]['stationSum'] }}站</view>
-          <view class="bus-stop__distance">约{{ data[0]['distance'] }}米</view>
+          <view class="bus-stop__station-num">
+            剩余{{ data[0]['stationSum'] }}站
+          </view>
+          <view class="bus-stop__distance">
+            约{{ data[0]['distance'] }}米
+          </view>
         </view>
-        <view class="bus-stop__plate-number">车牌：{{ data[0]['plateNumber'] }}</view>
+        <view class="bus-stop__plate-number">
+          车牌：{{ data[0]['plateNumber'] }}
+        </view>
         <slot name="scope" />
       </view>
     </scroll-view>
-    <view class="bus-stop__card bus-stop__card--transparent"
-          v-else>
+    <view
+      class="bus-stop__card bus-stop__card--transparent"
+      v-else
+    >
       <bus-loading v-if="loading" />
-      <bus-button type="primary"
-                  plain
-                  @click="queryStopInfo"
-                  v-else-if="isError">重新查询</bus-button>
-      <view class="bus-stop__empty"
-            v-else>
-        <bus-icon name="bus-naozhong"
-                  extra-class="bus-stop__empty-icon" />
-        <text class="bus-stop__empty-text">等待发车</text>
+      <bus-button
+        type="primary"
+        plain
+        @click="queryStopInfo"
+        v-else-if="isError"
+      >
+        重新查询
+      </bus-button>
+      <view
+        class="bus-stop__empty"
+        v-else
+      >
+        <bus-icon
+          name="bus-naozhong"
+          extra-class="bus-stop__empty-icon"
+        />
+        <text class="bus-stop__empty-text">
+          等待发车
+        </text>
       </view>
       <view class="bus-stop__slot-wrap">
         <slot name="scope" />
