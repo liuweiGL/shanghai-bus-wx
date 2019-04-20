@@ -38,7 +38,7 @@
           >
             <view class="bus-router-detail__station">
               <text class="bus-router-detail__label">
-                {{ item+index }}
+                {{ item }}
               </text>
               <bus-icon
                 name="bus-star"
