@@ -1,14 +1,7 @@
 <template>
   <transition>
-    <view
-      class="bus-tip"
-      :style="style"
-      :class="tipClass"
-      v-show="show"
-    >
-      <view class="bus-tip__text">
-        {{ text }}
-      </view>
+    <view class="bus-tip" :style="style" :class="tipClass" v-show="show">
+      <view class="bus-tip__text">{{ text }}</view>
     </view>
   </transition>
 </template>

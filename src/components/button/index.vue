@@ -4,14 +4,10 @@
     hover-class="is-hover"
     @click.stop="clickHandler"
   >
-    <bus-icon
-      name="bus-loading"
-      extra-class="bus-button__icon"
-      v-if="loading"
-    />
+    <bus-icon name="bus-loading" extra-class="bus-button__icon" v-if="loading"/>
     <view class="bus-button__label">
-      <slot />
-      <slot name="scope" />
+      <slot/>
+      <slot name="scope"/>
     </view>
   </view>
 </template>

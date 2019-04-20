@@ -10,13 +10,7 @@
         auto-focus
         @confirm="searchHandler"
       >
-      <icon
-        size="16"
-        type="search"
-        color="#597ef7"
-        class="bus-search__icon"
-        v-if="!searchText"
-      />
+      <icon size="16" type="search" color="#597ef7" class="bus-search__icon" v-if="!searchText"/>
       <icon
         size="16"
         type="clear"
@@ -27,15 +21,8 @@
       />
     </view>
     <view class="bus-search__bd">
-      <bus-autocomplete
-        v-model="searchText"
-        @item-click="itemClickHandler"
-        v-if="searchText"
-      />
-      <bus-history
-        :search-value="searchValue"
-        @item-click="itemClickHandler"
-      />
+      <bus-autocomplete v-model="searchText" @item-click="itemClickHandler" v-if="searchText"/>
+      <bus-history :search-value="searchValue" @item-click="itemClickHandler"/>
     </view>
   </view>
 </template>

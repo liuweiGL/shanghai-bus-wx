@@ -2,16 +2,11 @@
   <view class="bus-list">
     <view class="bus-list__hd">
       <slot name="title">
-        <view class="bus-list__title">
-          {{ title||'' }}
-        </view>
+        <view class="bus-list__title">{{ title||'' }}</view>
       </slot>
     </view>
     <view class="bus-list__bd">
-      <scroll-view
-        class="bus-list__inner"
-        scroll-y
-      >
+      <scroll-view class="bus-list__inner" scroll-y>
         <!-- 注意：插槽的作用域是在当前组件下 -->
         <slot name="list">
           <view
@@ -19,9 +14,7 @@
             v-for="(item, index) in data"
             :key="index"
             @click="clickHandler(item,index)"
-          >
-            {{ item }}
-          </view>
+          >{{ item }}</view>
         </slot>
       </scroll-view>
     </view>

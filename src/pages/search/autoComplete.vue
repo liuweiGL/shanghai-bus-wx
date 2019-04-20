@@ -8,14 +8,8 @@
           :key="item"
           @click="itemClickHandler(item)"
         >
-          <icon
-            type="search"
-            size="14"
-            color="rgba(0, 0, 0, .45)"
-          />
-          <view class="bus-autocomplete__text">
-            {{ item }}
-          </view>
+          <icon type="search" size="14" color="rgba(0, 0, 0, .45)"/>
+          <view class="bus-autocomplete__text">{{ item }}</view>
         </view>
       </template>
     </bus-list>

@@ -3,9 +3,7 @@
     <block v-if="data">
       <view class="bus-router-detail__hd">
         <view class="bus-router-detail__info bus-router-detail__info--primary">
-          <view class="bus-router-detail__name">
-            {{ data.name }}
-          </view>
+          <view class="bus-router-detail__name">{{ data.name }}</view>
           <bus-icon
             name="bus-swap"
             extra-class="bus-router-detail__swap"
@@ -13,22 +11,13 @@
           />
         </view>
         <view class="bus-router-detail__info">
-          <view class="bus-router-detail__time">
-            首班车：{{ data.startTime }}
-          </view>
-          <view class="bus-router-detail__time">
-            末班车：{{ data.endTime }}
-          </view>
-          <view class="bus-router-detail__price">
-            票价：￥{{ data.price }}
-          </view>
+          <view class="bus-router-detail__time">首班车：{{ data.startTime }}</view>
+          <view class="bus-router-detail__time">末班车：{{ data.endTime }}</view>
+          <view class="bus-router-detail__price">票价：￥{{ data.price }}</view>
         </view>
       </view>
       <view class="bus-router-detail__bd">
-        <scroll-view
-          class="bus-router-detail__list"
-          scroll-y
-        >
+        <scroll-view class="bus-router-detail__list" scroll-y>
           <view
             class="bus-router-detail__item"
             :class="currentIndex === index ? 'is-active':''"
@@ -37,9 +26,7 @@
             @click="searchStopHandler(index)"
           >
             <view class="bus-router-detail__station">
-              <text class="bus-router-detail__label">
-                {{ item }}
-              </text>
+              <text class="bus-router-detail__label">{{ item }}</text>
               <bus-icon
                 name="bus-star"
                 :extra-class="getIconClass(item)"
@@ -55,12 +42,7 @@
         </scroll-view>
       </view>
     </block>
-    <bus-alert
-      msg="没有此公交信息"
-      button-text="返回"
-      @click="gobackHandler"
-      v-else-if="isEmpty"
-    />
+    <bus-alert msg="没有此公交信息" button-text="返回" @click="gobackHandler" v-else-if="isEmpty"/>
     <bus-alert
       type="warn"
       msg="查询失败"

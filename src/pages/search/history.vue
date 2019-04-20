@@ -3,16 +3,8 @@
     <bus-list :data="data">
       <template slot="title">
         <view class="bus-history__hd">
-          <text class="bus-history__title">
-            搜索历史：
-          </text>
-          <bus-button
-            extra-class="bus-history__btn"
-            plain
-            @click="clearHistoryHandler"
-          >
-            清除
-          </bus-button>
+          <text class="bus-history__title">搜索历史：</text>
+          <bus-button extra-class="bus-history__btn" plain @click="clearHistoryHandler">清除</bus-button>
         </view>
       </template>
       <template slot="list">
@@ -22,13 +14,8 @@
           :key="item"
           @click="itemClickHandler(item)"
         >
-          <bus-icon
-            name="bus-time-circle"
-            extra-class="bus-history__icon"
-          />
-          <view class="bus-history__text">
-            {{ item }}
-          </view>
+          <bus-icon name="bus-time-circle" extra-class="bus-history__icon"/>
+          <view class="bus-history__text">{{ item }}</view>
         </view>
       </template>
     </bus-list>

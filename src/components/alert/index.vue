@@ -1,14 +1,9 @@
 <template>
   <view class="bus-alert">
-    <slot />
+    <slot/>
     <view class="bus-alert__inner">
-      <icon
-        :type="type"
-        size="20"
-      />
-      <text class="bus-alert__text">
-        {{ msg }}
-      </text>
+      <icon :type="type" size="20"/>
+      <text class="bus-alert__text">{{ msg }}</text>
     </view>
     <bus-button
       extra-class="bus-alert__btn"
